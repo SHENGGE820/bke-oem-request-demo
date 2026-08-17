@@ -39,7 +39,7 @@
                   <label>申請日期 *<input required type="date" name="申請日期"></label>
                   <label class="wide">單號 <input id="requestNo" name="單號" value="A＋日期（送出後自動產生）" readonly><span class="sub">保留原表「A＋日期」編號規則，由系統自動帶入。</span></label>
                   <label>客戶名稱 *<input required name="客戶名稱" placeholder="公司或品牌名稱"></label>
-                  <label>產品類別 *<select required name="產品類別"><option value="">請選擇</option><option>人營養補充品</option><option>寵物補充品</option></select></label>
+                  <label>產品類別 *<select required name="產品類別"><option value="">請選擇</option><option>人營養補充品</option><option>寵物補充品</option><option>尚未確定／待客戶確認</option></select></label>
                 </div>
               </section>
               <section class="page" data-title="客戶需求">
@@ -59,10 +59,10 @@
                 <div class="sectionHead"><span class="stepMeta">確認能不能做</span><h2>預算與產品要做成什麼樣子？</h2><p>先填目標原料成本，再選劑型；系統會自動顯示該劑型需要的規格。</p><span class="requiredNote">＊ 成本請務必註明計價單位，例如「每顆原料 4 元內」。</span></div>
                 <div class="grid">
                   <label>目標原料成本 *<input required name="目標成本" placeholder="例如：每顆原料 4 元內"><span class="sub">請註明單位；不含代工與包裝。</span></label>
-                  <label>預計每盒售價 <span class="optional">選填</span><input type="number" min="0" name="產品售價" placeholder="新台幣，例如：980"></label>
-                  <label>每盒數量 <span class="optional">選填</span><input type="number" min="1" name="產品每盒數量" placeholder="例如：30"></label>
+                  <label>預計每盒售價 <span class="optional">選填</span><input type="text" inputmode="numeric" name="產品售價" placeholder="新台幣，例如：980"></label>
+                  <label>每盒數量 <span class="optional">選填</span><input type="text" inputmode="numeric" name="產品每盒數量" placeholder="例如：30"></label>
                   <label>每盒單位 <span class="optional">選填</span><select name="產品每盒單位"><option value="">請選擇單位</option><option>顆／盒</option><option>錠／盒</option><option>包／盒</option><option>瓶／盒</option><option>條／盒</option><option>份／盒</option></select></label>
-                  <label class="wide">目標劑型 *<select required id="dosage" name="目標劑型"><option value="">請選擇</option><option>粉劑</option><option>膠囊</option><option>錠劑</option><option>液態</option><option>果凍</option><option>其他特殊劑型</option></select></label>
+                  <label class="wide">目標劑型 *<select required id="dosage" name="目標劑型"><option value="">請選擇</option><option>🧂 粉劑</option><option>💊 膠囊</option><option>⚪ 錠劑</option><option>💧 液態</option><option>🍮 果凍</option><option>✨ 其他特殊劑型</option></select></label>
                   <div id="powderField" class="wide conditional"><label>粉劑規格 *<input name="粉劑規格" placeholder="每包克數（g／包）"></label></div>
                   <div id="capsuleField" class="wide conditional grid"><label>膠囊材質 *<select name="膠囊材質"><option value="">請選擇</option><option>植物膠囊</option><option>明膠膠囊</option></select></label><label>膠囊號數 *<select name="膠囊號數"><option value="">請選擇</option><option>00 號</option><option>0 號</option><option>1 號</option><option>2 號</option><option>3 號</option><option>4 號</option><option>5 號</option></select></label></div>
                   <div id="tabletField" class="wide conditional grid"><label>錠劑形式 *<select name="錠劑形式"><option value="">請選擇</option><option>裸錠</option><option>膜衣錠</option></select></label><label>每顆重量 *<input name="錠劑重量" placeholder="mg／顆"></label></div>
