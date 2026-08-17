@@ -59,15 +59,27 @@
 })();
 (function(){
   const jumpTypes=['text','date','number','email','tel','search','url'];
+  const backJumpTypes=['text','email','tel','search','url'];
   function isJumpField(el){if(!el)return false;if(el.tagName==='SELECT')return true;if(el.tagName!=='INPUT')return false;return jumpTypes.includes((el.getAttribute('type')||'text').toLowerCase())}
+  function isBackJumpField(el){return!!el&&el.tagName==='INPUT'&&backJumpTypes.includes((el.getAttribute('type')||'text').toLowerCase())}
   function isVisible(el){return!!(el.offsetWidth||el.offsetHeight||el.getClientRects().length)}
+  function jumpFields(){return[...document.querySelectorAll('input,select')].filter(el=>isJumpField(el)&&!el.disabled&&isVisible(el))}
   document.addEventListener('keydown',event=>{
-    if(event.key!=='Enter'||event.isComposing)return;
+    if(event.isComposing)return;
     const target=event.target;
-    if(!isJumpField(target))return;
-    event.preventDefault();
-    const fields=[...document.querySelectorAll('input,select')].filter(el=>isJumpField(el)&&!el.disabled&&isVisible(el));
-    const next=fields[fields.indexOf(target)+1];
-    if(next)next.focus()
+    if(event.key==='Enter'&&isJumpField(target)){
+      event.preventDefault();
+      const fields=jumpFields();
+      const next=fields[fields.indexOf(target)+1];
+      if(next)next.focus();
+      return
+    }
+    // ArrowUp 只在日期／數字／下拉選單以外的一般文字欄位生效，避免蓋掉這些欄位原生的上下鍵操作
+    if(event.key==='ArrowUp'&&isBackJumpField(target)){
+      event.preventDefault();
+      const fields=jumpFields();
+      const prev=fields[fields.indexOf(target)-1];
+      if(prev)prev.focus()
+    }
   },true);
 })();
