@@ -38,6 +38,7 @@
 - A 表工作已拆成「營養師收案與資料確認」及「配方與報價」；接受案件後才會解鎖配方工作。
 - 案件頁頁籤順序已調整為「需求內容→收案處理→工作進度→……」；`case.html` 內 `pages`／`tabBtns` 陣列改用 id 對照表建立（而非單純 DOM 順序），之後新增或調整頁籤時務必同步檢查 `renderSharedWorkflow`／`renderSharedFormula`／`renderSharedCase`／`requestedView` 內的索引是否一致。
 - `shared-case-store.js` 已有 `decorateCasePage()`／`taskAccess()` 這套工作清單鎖定機制（locked／active／completed 狀態與專屬引導文字），修改「案件完整進度」清單前務必先讀這段，避免做出重複或衝突的防呆邏輯。
+- `shared-case-store.js` 已全庫共用新增一段 Enter 自動跳格行為（根據 DOM 順序判斷下一個可規儙欄位，適用 input 文字／數字／日期與 select，不包含 textarea／checkbox／radio），新增表單欄位時不需要額外接線。
 - `tasks.html` 會從 `bke-a-case-demo-v2` 讀取案件工作負責人、進度及期限，其餘卡片與 `reports.html` 仍為測試資料。
 - `tasks.html` 也會讀取 `bke-demo-cases-v1` 中由 A／B／C 表建立的新案件；有 `case` 查詢參數時，`case.html` 會顯示該案件及其自動產生的工作。
 - 尚無共享資料庫、正式 API、附件儲存、登入權限、通知或稽核紀錄。

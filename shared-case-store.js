@@ -57,3 +57,17 @@
   window.BKECases={all,find,create,update,snapshot,task,tasksA,tasksB,tasksC,incompleteTasks,availableTasks,activeTask,derivedStatus,taskAccess,isOverdue,overdueTasks,activeSupplement,returnForSupplement,resumeAfterSupplement,acceptIntake,decorateCasePage,key};
   scheduleCaseDecoration();
 })();
+(function(){
+  const jumpTypes=['text','date','number','email','tel','search','url'];
+  function isJumpField(el){if(!el)return false;if(el.tagName==='SELECT')return true;if(el.tagName!=='INPUT')return false;return jumpTypes.includes((el.getAttribute('type')||'text').toLowerCase())}
+  function isVisible(el){return!!(el.offsetWidth||el.offsetHeight||el.getClientRects().length)}
+  document.addEventListener('keydown',event=>{
+    if(event.key!=='Enter'||event.isComposing)return;
+    const target=event.target;
+    if(!isJumpField(target))return;
+    event.preventDefault();
+    const fields=[...document.querySelectorAll('input,select')].filter(el=>isJumpField(el)&&!el.disabled&&isVisible(el));
+    const next=fields[fields.indexOf(target)+1];
+    if(next)next.focus()
+  },true);
+})();
