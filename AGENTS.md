@@ -36,6 +36,8 @@
 - 角色介面目前是分開的靜態展示：業管使用 `sales.html`、營養師使用 `nutritionist.html`、研發使用 `rd.html`、行銷顧問使用 `marketing.html`、主管使用 `reports.html`，`role-portal.html` 僅供測試切換；`preview.html` 保留為舊版案件工作台入口。
 - `case.html` 有工作項目分派、營養師收案、結構化退回補件、業管原案件補件、配方與報價測試工作區、三次調整、三次打樣、追蹤與結案。配方原料明細與成本拆項目前只是未確認草案，不是原表正式欄位。
 - A 表工作已拆成「營養師收案與資料確認」及「配方與報價」；接受案件後才會解鎖配方工作。
+- 案件頁頁籤順序已調整為「需求內容→收案處理→工作進度→……」；`case.html` 內 `pages`／`tabBtns` 陣列改用 id 對照表建立（而非單純 DOM 順序），之後新增或調整頁籤時務必同步檢查 `renderSharedWorkflow`／`renderSharedFormula`／`renderSharedCase`／`requestedView` 內的索引是否一致。
+- `shared-case-store.js` 已有 `decorateCasePage()`／`taskAccess()` 這套工作清單鎖定機制（locked／active／completed 狀態與專屬引導文字），修改「案件完整進度」清單前務必先讀這段，避免做出重複或衝突的防呆邏輯。
 - `tasks.html` 會從 `bke-a-case-demo-v2` 讀取案件工作負責人、進度及期限，其餘卡片與 `reports.html` 仍為測試資料。
 - `tasks.html` 也會讀取 `bke-demo-cases-v1` 中由 A／B／C 表建立的新案件；有 `case` 查詢參數時，`case.html` 會顯示該案件及其自動產生的工作。
 - 尚無共享資料庫、正式 API、附件儲存、登入權限、通知或稽核紀錄。
