@@ -8,10 +8,11 @@
 
 ## 接手前必讀
 
-1. 讀完整 `README.md`。
-2. 檢查 `preview.html`、`role-portal.html`、`sales.html`、`form-versions.html`、`wizard.html`、`wizard-simple.html`、`product-data-form.html`、`marketing-request-form.html`、`nutritionist.html`、`rd.html`、`case.html`、`tasks.html`、`reports.html`。
-3. 任何修改前先跑完整操作流程：工作台 → 新增需求 → 分別測試 A／B／C 表 → 送出 → 案件處理 → 待辦 → 報表。
-4. 若要調整表單內容，必須對照原始工作簿 `需求表單(防呆版)VL討論結果.xlsx`；若工作簿不在新環境，向使用者索取，不要自行刪欄位。
+1. 讀完整 `HANDOFF_GUIDE.md`、`README.md` 與本文件。
+2. 確認 `references/private/需求表單(防呆版)VL討論結果.xlsx` 與 `references/private/message.txt` 已存在；私有參考檔預設不進 GitHub。
+3. 檢查 `preview.html`、`role-portal.html`、`sales.html`、`form-versions.html`、`wizard.html`、`wizard-simple.html`、`product-data-form.html`、`marketing-request-form.html`、`nutritionist.html`、`rd.html`、`case.html`、`tasks.html`、`reports.html`。
+4. 任何修改前先跑完整操作流程：工作台 → 新增需求 → 分別測試 A／B／C 表 → 送出 → 案件處理 → 待辦 → 報表。
+5. 若要調整表單內容，必須對照原始工作簿；若工作簿不在新環境，向使用者索取，不要自行刪欄位。
 
 ## 已確認的使用者需求
 

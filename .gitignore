@@ -41,3 +41,6 @@ next-env.d.ts
 /outputs/
 /work/
 /.tools/
+
+# Local-only internal references. Do not publish without explicit approval.
+/references/private/
