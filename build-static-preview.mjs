@@ -2,7 +2,7 @@ import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
 const root = resolve(import.meta.dirname);
-const pageFiles = ["preview.html", "role-portal.html", "sales.html", "form-versions.html", "wizard.html", "wizard-simple.html", "product-data-form.html", "marketing-request-form.html", "nutritionist.html", "rd.html", "case.html", "tasks.html", "reports.html", "shared-case-store.js"];
+const pageFiles = ["preview.html", "role-portal.html", "sales.html", "form-versions.html", "wizard.html", "wizard-simple.html", "product-data-form.html", "marketing-request-form.html", "nutritionist.html", "rd.html", "marketing.html", "case.html", "tasks.html", "reports.html", "shared-case-store.js"];
 const pages = {};
 
 for (const file of pageFiles) {
