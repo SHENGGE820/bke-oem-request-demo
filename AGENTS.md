@@ -9,8 +9,8 @@
 ## 接手前必讀
 
 1. 讀完整 `README.md`。
-2. 檢查 `preview.html`、`wizard.html`、`case.html`、`tasks.html`、`reports.html`。
-3. 任何修改前先跑完整操作流程：工作台 → 新增需求 → 五步表單 → 送出 → 案件處理 → 待辦 → 報表。
+2. 檢查 `preview.html`、`role-portal.html`、`sales.html`、`form-versions.html`、`wizard.html`、`wizard-simple.html`、`product-data-form.html`、`marketing-request-form.html`、`nutritionist.html`、`rd.html`、`case.html`、`tasks.html`、`reports.html`。
+3. 任何修改前先跑完整操作流程：工作台 → 新增需求 → 分別測試 A／B／C 表 → 送出 → 案件處理 → 待辦 → 報表。
 4. 若要調整表單內容，必須對照原始工作簿 `需求表單(防呆版)VL討論結果.xlsx`；若工作簿不在新環境，向使用者索取，不要自行刪欄位。
 
 ## 已確認的使用者需求
@@ -26,10 +26,16 @@
 
 ## 現況
 
-- 五頁靜態 HTML 已完成可操作展示。
-- `wizard.html` 有步驟式表單、條件欄位、防呆、預覽與本機草稿。
-- `case.html` 有營養師接案、初步配方、三次調整、三次打樣、追蹤與結案。
-- `tasks.html` 和 `reports.html` 仍以固定測試資料呈現。
+- 多角色靜態 HTML 原型已完成可操作展示。
+- `wizard.html` 是 A 客戶配方需求的步驟式填法，含條件欄位、防呆、預覽與本機草稿。
+- `wizard-simple.html` 是同一張 A 表的快速填法，保留相同欄位與選項並使用獨立草稿。
+- `product-data-form.html` 與 `marketing-request-form.html` 分別對應原工作簿 B、C 分頁。
+- `shared-case-store.js` 串接 A／B／C 送出、案件詳情、工作台及待辦，資料鍵為 `bke-demo-cases-v1`。
+- A 表兩種填法送出前皆有交接品質檢查；修改任一版時，必須保持風險規則與送出確認行為一致。
+- 角色介面目前是分開的靜態展示：業管使用 `sales.html`、營養師使用 `nutritionist.html`、研發使用 `rd.html`、主管使用 `reports.html`，`role-portal.html` 僅供測試切換；`preview.html` 保留為舊版案件工作台入口。
+- `case.html` 有工作項目分派、營養師接案、初步配方、三次調整、三次打樣、追蹤與結案。
+- `tasks.html` 會從 `bke-a-case-demo-v2` 讀取案件工作負責人、進度及期限，其餘卡片與 `reports.html` 仍為測試資料。
+- `tasks.html` 也會讀取 `bke-demo-cases-v1` 中由 A／B／C 表建立的新案件；有 `case` 查詢參數時，`case.html` 會顯示該案件及其自動產生的工作。
 - 尚無共享資料庫、正式 API、附件儲存、登入權限、通知或稽核紀錄。
 - 公開展示網址是 `https://bke-oem-request-demo.daoson-tw.chatgpt.site/`。
 - Sites 專案 ID 已寫在 `.openai/hosting.json`，部署時必須沿用，禁止重複建立 Sites 專案。
@@ -43,7 +49,7 @@
 - 行動裝置與桌面都應可用；複選項不能變成難掃描的文字牆。
 - 送出、退回、接案、更新配方、申請打樣與結案都應產生活動紀錄。
 - 正式版資料採共享雲端資料庫，瀏覽器 `localStorage` 僅能作為暫存或離線輔助。
-- 角色至少包含業管、營養師／研發、主管；權限需以後端驗證，不只隱藏按鈕。
+- 角色至少包含業管、營養師、研發、行銷顧問、主管；權限需以後端驗證，不只隱藏按鈕。
 
 ## 優先待辦
 
@@ -56,4 +62,4 @@
 
 ## 儲存庫範圍警告
 
-原本本機資料夾混有其他未追蹤內容，例如品牌圖片、商品設計、另一套大型 App 與開發腳手架。它們不屬於此儲存庫。提交時只能納入本文件、README、五個 HTML、`build-static-preview.mjs`、`.openai/hosting.json` 與必要的忽略設定。
+原本本機資料夾混有其他未追蹤內容，例如品牌圖片、商品設計、另一套大型 App 與開發腳手架。它們不屬於此儲存庫。提交時只能納入本文件、README、本專案 HTML、`build-static-preview.mjs`、`.openai/hosting.json` 與必要的忽略設定。

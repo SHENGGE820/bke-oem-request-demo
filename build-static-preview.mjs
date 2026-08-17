@@ -2,7 +2,7 @@ import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
 const root = resolve(import.meta.dirname);
-const pageFiles = ["preview.html", "wizard.html", "case.html", "tasks.html", "reports.html"];
+const pageFiles = ["preview.html", "role-portal.html", "sales.html", "form-versions.html", "wizard.html", "wizard-simple.html", "product-data-form.html", "marketing-request-form.html", "nutritionist.html", "rd.html", "case.html", "tasks.html", "reports.html", "shared-case-store.js"];
 const pages = {};
 
 for (const file of pageFiles) {
@@ -18,7 +18,7 @@ export default {
     if (!html) return new Response("Not found", { status: 404 });
     return new Response(html, {
       headers: {
-        "content-type": "text/html; charset=utf-8",
+        "content-type": url.pathname.endsWith(".js") ? "text/javascript; charset=utf-8" : "text/html; charset=utf-8",
         "cache-control": "no-store",
         "x-content-type-options": "nosniff"
       }
