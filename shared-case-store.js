@@ -6,7 +6,8 @@
   function save(cases){localStorage.setItem(key,JSON.stringify(cases));return cases}
   function snapshot(form){const data={};form.querySelectorAll('[name]').forEach(field=>{if(field.type==='file')return;if(field.type==='checkbox'){data[field.name]??=[];if(field.checked)data[field.name].push(field.value)}else data[field.name]=field.value});return data}
   function task(title,role,name='未指派',status='未開始'){return{id:'task-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),title,ownerRole:role,ownerName:name,status,due:'',note:'',updatedAt:now()}}
-  function create({type,title,customer,applicant,summary,tasks}){const item={id:`${type}-${day()}-${String(Math.floor(Math.random()*900)+100)}`,type,title:title||`${type} 表需求案件`,customer:customer||'尚未填寫客戶',applicant:applicant||'尚未填寫申請人',status:'進行中',createdAt:now(),updatedAt:now(),summary:summary||{},tasks:tasks||[],activities:[]};const cases=all();cases.unshift(item);save(cases);return item}
+  function uniqueId(type,cases){let id;do{id=`${type}-${day()}-${String(Math.floor(Math.random()*900)+100)}`}while(cases.some(item=>item.id===id));return id}
+  function create({type,title,customer,applicant,summary,tasks}){const cases=all(),createdAt=now(),item={id:uniqueId(type,cases),type,title:title||`${type} 表需求案件`,customer:customer||'尚未填寫客戶',applicant:applicant||'尚未填寫申請人',status:'進行中',createdAt,updatedAt:createdAt,summary:summary||{},tasks:tasks||[],activities:[{at:createdAt,text:`${type} 表建立案件`}]};cases.unshift(item);save(cases);return item}
   function update(item){const cases=all(),index=cases.findIndex(entry=>entry.id===item.id);item.updatedAt=now();if(index>=0)cases[index]=item;else cases.unshift(item);save(cases);return item}
   function find(id){return all().find(item=>item.id===id)||null}
   function tasksA(data){const applicant=data['申請人員']||'申請人員';return[task('客戶需求確認','業管',applicant,'已完成'),task('配方評估與報價','營養師'),task('樣品打樣','研發'),task('客戶確認與結案','業管',applicant)]}
