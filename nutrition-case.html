@@ -160,7 +160,7 @@
 </style>
 </head>
 <body>
-<header class="top"><div class="logo">BKE <small>營養師案件審閱</small></div><div><button onclick="location.href='role-portal.html'">切換角色</button> <button onclick="location.href='nutritionist.html'">我的案件</button> <button id="exportCaseBtn" hidden>⬇ 匯出本案 CSV</button></div></header>
+<header class="top"><div class="logo">BKE <small>營養師案件審閱</small></div><div><button onclick="location.href='role-portal.html'">切換角色</button> <button onclick="location.href='nutritionist.html'">我的案件</button> <button id="exportXlsxBtn" hidden>⬇ 匯出原表 Excel</button> <button id="exportCaseBtn" hidden>⬇ 匯出本案 CSV</button></div></header>
 <main class="wrap">
   <div class="crumb" id="crumb">案件審閱</div>
   <div id="notFound" class="notFound" hidden>找不到這筆案件，可能是連結錯誤或這台裝置沒有這筆本機測試資料。<br><button class="smallButton" style="margin-top:14px" onclick="location.href='nutritionist.html'">回營養師工作台</button></div>
@@ -187,6 +187,8 @@
 </main>
 <div class="floatPanel" id="supplementPanel" hidden><header class="floatHead" id="supplementHead">🖊 逐欄標記補件<span class="grip">（可拖曳）</span><button type="button" class="floatClose" id="closeSupplement" aria-label="關閉">×</button></header><div class="floatBody"><p class="floatHint" id="supplementHint"></p><div class="floatFields" id="supplementFields"></div><label class="floatNote">補充說明<textarea id="supplementNote" placeholder="例如：目標成本請補上每顆或每包的計價單位"></textarea></label></div><footer class="floatFoot"><span id="supplementCount">已選 0 項</span><button type="button" class="primary" id="submitSupplement">送出退回補件</button></footer></div>
 <div class="savedToast" id="savedToast">已儲存</div>
+<script src="vendor/xlsx.bundle.js"></script>
+<script src="xlsx-export.js"></script>
 <script src="shared-case-store.js"></script>
 <script>
 const{A_CORE_FIELDS,A_OPTIONAL_FIELDS,FIELD_OPTIONS,summaryFilled}=window.BKECases||{};
@@ -235,6 +237,8 @@ function init(){
 
   const exportBtn=document.querySelector('#exportCaseBtn');
   exportBtn.hidden=false;
+  const exportXlsxBtn=document.querySelector('#exportXlsxBtn');
+  if(exportXlsxBtn&&window.BKEFormXlsx){exportXlsxBtn.hidden=false;exportXlsxBtn.onclick=()=>{BKEFormXlsx.exportCase(sharedCase);toast('已依原 A 表版面匯出 Excel')};}
 
   const view=new URLSearchParams(location.search).get('view');
   const formulaCard=document.querySelector('#formulaCard');
