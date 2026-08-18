@@ -158,6 +158,8 @@ git log -5 --oneline
 
 若用 `file:///` 直接開啟，資料只存在該瀏覽器的本機儲存空間。換瀏覽器、網址來源或裝置時，測試案件不會自動出現。
 
+線上也可以用 GitHub Pages 開啟：<https://shengge820.github.io/bke-oem-request-demo/>（來源分支 `agent/sync-bke-request-workflow`，推送後自動更新）；同樣是各裝置獨立的 `localStorage`，不會跨裝置同步案件。
+
 ## 10. 每完成一步都要更新並推 GitHub
 
 使用者明確要求每完成一個可用階段都執行：

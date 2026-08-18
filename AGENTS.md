@@ -53,6 +53,7 @@
 - **使用者明確要求（2026-08-17）：**「工作進度」狀態應尽量跟著實際操作（送出、收案、退回、補件、確認、完成配方等）自動更新，不要要求業管再手動去改一次狀態；但仍要保留手動修正的能力作為備援（例如補錄漏採的紀錄或修正錯誤）。目前 `acceptIntake`／`returnForSupplement`／`resumeAfterSupplement`／`saveFormula` 已會自動更新對應工作的狀態與負責人；仍需確認未來新增的工作項目（如研發打樣、客戶結案）是否也能同樣自動化，不要回退成全靠手動點選單。
 - 各角色工作台預設只顯示未完成工作；完成紀錄保留在「已完成／歷史」篩選或折疊區。主管總覽仍可查看全部案件。
 - 公開展示網址是 `https://bke-oem-request-demo.daoson-tw.chatgpt.site/`。
+- **使用者明確要求（2026-08-18）：**要另一個「別的地方也能開」的公開網址，已改用 GitHub Pages（不是重建 OpenAI Sites），來源分支設為 `agent/sync-bke-request-workflow`，網址 `https://shengge820.github.io/bke-oem-request-demo/`；推送到該分支後 GitHub 會自動重新建置，不需要另外操作。新增 `index.html` 重導到 `role-portal.html`，因為原本沒有根目錄入口頁。
 - Sites 專案 ID 已寫在 `.openai/hosting.json`，部署時必須沿用，禁止重複建立 Sites 專案。
 
 ## 實作原則

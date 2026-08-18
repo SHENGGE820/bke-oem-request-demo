@@ -4,6 +4,8 @@
 
 目前線上展示：<https://bke-oem-request-demo.daoson-tw.chatgpt.site/>
 
+GitHub Pages（自動跟隨 `agent/sync-bke-request-workflow` 分支最新內容）：<https://shengge820.github.io/bke-oem-request-demo/>
+
 > 現階段是公開的前台操作展示，請勿輸入真實客戶、配方、報價或其他機密資料。
 
 ## 這個專案要做什麼
@@ -160,6 +162,7 @@ C 表依實際填寫內容建立官網產品審稿、產品介紹 PPT、教育�
 - 公開網址：<https://bke-oem-request-demo.daoson-tw.chatgpt.site/>
 - Sites 專案 ID：`appgprj_6a7ee61147008191ae2601e2e6d13b1b`
 - `.openai/hosting.json` 已保存 Sites 專案連結，後續不要重建另一個 Sites 專案。
+- 第二個公開入口：GitHub Pages，來源分支為 `agent/sync-bke-request-workflow`，網址：<https://shengge820.github.io/bke-oem-request-demo/>，推送到該分支後會自動重新建置，不需要手動操作。根目錄 `index.html` 會重導到 `role-portal.html`。
 
 ## 原始需求來源
 
