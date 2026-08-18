@@ -125,6 +125,31 @@
 .savedToast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);background:#174f3d;color:#fff;padding:12px 20px;border-radius:99px;opacity:0;pointer-events:none;transition:.25s;font-size:14px}
 .savedToast.show{opacity:1;transform:translate(-50%,0)}
 .notFound{background:white;border:1px solid #dee5e1;border-radius:15px;padding:32px;text-align:center;color:#5c6b64}
+.reviewActions{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px;padding-top:16px;border-top:1px dashed #d8e2dd}
+.reviewAct{border:1px solid #cbd8d2;background:#fff;color:#174f3d;border-radius:10px;padding:11px 18px;font-weight:700;cursor:pointer;font-size:15px}
+.reviewAct.primary{background:#174f3d;border-color:#174f3d;color:#fff}
+.kvItem[data-field-key]{transition:box-shadow .15s,background .15s}
+.kvItem.markPick{background:#fff3d6;border-radius:6px;box-shadow:inset 0 0 0 1px #e6c483}
+.intakeFocus{animation:intakeFlash 1.7s ease}
+@keyframes intakeFlash{0%{box-shadow:0 0 0 0 #f0c96a99}25%{box-shadow:0 0 0 5px #f4d98a77}100%{box-shadow:0 0 0 0 #f0c96a00}}
+.floatPanel{position:fixed;top:96px;right:26px;width:326px;max-height:calc(100vh - 132px);background:#fff;border:1px solid #cdddd4;border-radius:14px;box-shadow:0 18px 44px #0d2c2233;z-index:30;display:flex;flex-direction:column;overflow:hidden}
+.floatPanel[hidden]{display:none}
+.floatHead{background:#174f3d;color:#fff;padding:12px 16px;font:700 15px Arial;cursor:move;display:flex;align-items:center;justify-content:space-between;user-select:none}
+.floatHead .grip{opacity:.7;font-size:13px;font-weight:normal;margin-left:8px}
+.floatClose{border:0;background:transparent;color:#fff;font-size:21px;cursor:pointer;line-height:1;padding:0 2px}
+.floatBody{padding:14px 16px;overflow:auto}
+.floatHint{margin:0 0 10px;font-size:12.5px;color:#8a6b25;background:#fffaf1;border:1px solid #f0e0c0;border-radius:8px;padding:8px 10px;line-height:1.5}
+.floatFields{display:grid;gap:5px}
+.floatFields label{display:flex;align-items:center;gap:9px;font-size:13.5px;padding:6px 9px;border-radius:8px;cursor:pointer}
+.floatFields label:hover{background:#f2f7f4}
+.floatFields label.missField{background:#fff6e9;border:1px solid #f0d9a8}
+.floatFields label em{font-style:normal;margin-left:auto;color:#b5892f;font-weight:700;font-size:11px;background:#f6e2b8;padding:1px 7px;border-radius:20px}
+.floatNote{display:grid;gap:6px;margin-top:12px;font-size:13px;font-weight:700;color:#28362f}
+.floatNote textarea{width:100%;min-height:68px;border:1px solid #cbd7d1;border-radius:9px;padding:10px;font:inherit;resize:vertical}
+.floatFoot{border-top:1px solid #e6ece9;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.floatFoot span{font-size:12.5px;color:#6f7c76}
+.floatFoot button.primary{background:#174f3d;border:1px solid #174f3d;color:#fff;border-radius:9px;padding:10px 16px;font-weight:700;cursor:pointer}
+@media(max-width:640px){.floatPanel{right:12px;left:12px;width:auto}}
 </style>
 </head>
 <body>
@@ -153,7 +178,7 @@
     </div>
   </div>
 </main>
-<div class="modal" id="returnModal"><form class="dialog" id="returnForm"><h2>退回補件</h2><p class="subnote">請勾選需要業管重新確認的欄位；業管會在原案件直接補充，不必重開表單。</p><div class="returnChoices" id="returnChoices"></div><label>補充說明<textarea name="退回原因" placeholder="例如：目標成本請補上每顆或每包的計價單位"></textarea></label><footer><button type="button" id="cancelReturn">取消</button><button class="primary">確認退回</button></footer></form></div>
+<div class="floatPanel" id="supplementPanel" hidden><header class="floatHead" id="supplementHead">🖊 逐欄標記補件<span class="grip">（可拖曳）</span><button type="button" class="floatClose" id="closeSupplement" aria-label="關閉">×</button></header><div class="floatBody"><p class="floatHint" id="supplementHint"></p><div class="floatFields" id="supplementFields"></div><label class="floatNote">補充說明<textarea id="supplementNote" placeholder="例如：目標成本請補上每顆或每包的計價單位"></textarea></label></div><footer class="floatFoot"><span id="supplementCount">已選 0 項</span><button type="button" class="primary" id="submitSupplement">送出退回補件</button></footer></div>
 <div class="savedToast" id="savedToast">已儲存</div>
 <script src="shared-case-store.js"></script>
 <script>
@@ -195,9 +220,10 @@ function init(){
   renderTimeline();
   renderActivity();
   renderAction(intake,formula);
-  renderReview();
+  renderReview(intake);
   renderIntake(intake);
   renderFormula(intake,formula);
+  bindSupplementPanel(intake);
   bindExport();
 
   const exportBtn=document.querySelector('#exportCaseBtn');
@@ -237,22 +263,24 @@ function renderAction(intake,formula){
   card.innerHTML=`<div class="icon">${icon}</div><div><h2>${safe(title)}</h2><p>${safe(copy)}</p></div>`;
 }
 
-function renderReview(){
+function renderReview(intake){
   const card=document.querySelector('#reviewCard'),summary=sharedCase.summary||{};
   const missing=A_CORE_FIELDS.filter(([key])=>!summaryFilled(summary[key]));
   const groups=[['① 產品與對象',['產品類別','族群','族群年齡','調理部位','期望功能']],['② 需求與成本',['客戶需求','目標成本','產品售價']],['③ 劑型與包裝',['目標劑型','配方方式','每盒數量','每盒單位']],['④ 限制與出口',['特殊需求','出口國別']]];
   const byLabel=new Map(A_CORE_FIELDS.map(([key,label])=>[label,{key,label}]));
   const used=new Set();
-  const kvItem=(key,label)=>{const value=summary[key],filled=summaryFilled(value),text=withUnit(key,summaryText(value)),wide=filled&&text.length>34;return`<div class="kvItem ${filled?'':'miss'} ${wide?'full':''}"><span class="k">${summaryIcon(label)} ${safe(label)}</span><span class="v">${filled?safe(text):'<em>∅ 尚未填寫</em>'}</span></div>`};
+  const kvItem=(key,label)=>{const value=summary[key],filled=summaryFilled(value),text=withUnit(key,summaryText(value)),wide=filled&&text.length>34;return`<div class="kvItem ${filled?'':'miss'} ${wide?'full':''}" data-field-key="${safe(key)}"><span class="k">${summaryIcon(label)} ${safe(label)}</span><span class="v">${filled?safe(text):'<em>∅ 尚未填寫</em>'}</span></div>`};
   const groupHtml=groups.map(([title,labels])=>{const items=labels.map(l=>{const f=byLabel.get(l);if(!f)return'';used.add(f.label);return kvItem(f.key,f.label)}).join('');return`<div class="reviewGroup"><h4>${title}</h4><div class="kv">${items}</div></div>`}).join('');
   const dosageEntries=DOSAGE_SPEC_KEYS.map(key=>[key,summary[key]]).filter(([,value])=>summaryFilled(value));
   const dosageHtml=dosageEntries.length?`<div class="reviewGroup"><h4>劑型規格</h4><div class="kv">${dosageEntries.map(([k])=>kvItem(k,k)).join('')}</div></div>`:'';
   const leftover=A_CORE_FIELDS.filter(([,label])=>!used.has(label));
   const leftoverHtml=leftover.length?`<div class="reviewGroup"><h4>其他</h4><div class="kv">${leftover.map(([k,l])=>kvItem(k,l)).join('')}</div></div>`:'';
   const optionalEntries=A_OPTIONAL_FIELDS.map(key=>[key,summary[key]]).filter(([,value])=>summaryFilled(value));
-  const optionalHtml=optionalEntries.length?`<div class="reviewGroup"><h4>➕ 補充資料</h4><div class="kv">${optionalEntries.map(([name,value])=>`<div class="kvItem full"><span class="k">${summaryIcon(name)} ${safe(name)}</span><span class="v">${safe(withUnit(name,summaryText(value)))}</span></div>`).join('')}</div></div>`:'';
+  const optionalHtml=optionalEntries.length?`<div class="reviewGroup"><h4>➕ 補充資料</h4><div class="kv">${optionalEntries.map(([name,value])=>`<div class="kvItem full" data-field-key="${safe(name)}"><span class="k">${summaryIcon(name)} ${safe(name)}</span><span class="v">${safe(withUnit(name,summaryText(value)))}</span></div>`).join('')}</div></div>`:'';
   const banner=missing.length?`<div class="workflowStatus returned"><div><strong>⚠ 尚有 ${missing.length} 項基本資料未填寫</strong><p>缺少：${missing.map(([,label])=>safe(label)).join('、')}。建議先退回業管補件，再判斷是否接受案件。</p></div><span class="state">待補件</span></div>`:`<div class="workflowStatus"><div><strong>✓ 基本資料已填寫完整</strong><p>可依下方內容直接判斷是否接受案件。</p></div></div>`;
-  card.innerHTML=`<h2 class="sectionTitle">📋 需求內容</h2>${banner}${groupHtml}${dosageHtml}${leftoverHtml}${optionalHtml}`;
+  const actionable=intake&&intake.status!=='已完成'&&!(intake.status==='等待補件'&&intake.ownerRole==='業管');
+  const reviewActions=actionable?`<div class="reviewActions"><button type="button" class="reviewAct" id="markSupplementBtn">🖊 逐欄標記補件</button><button type="button" class="reviewAct primary" id="gotoIntakeBtn">前往收案處理 →</button></div>`:'';
+  card.innerHTML=`<h2 class="sectionTitle">📋 需求內容</h2>${banner}${groupHtml}${dosageHtml}${leftoverHtml}${optionalHtml}${reviewActions}`;
 }
 
 function renderIntake(intake){
@@ -268,36 +296,43 @@ function renderIntake(intake){
   }
   const returned=intake.status==='等待確認'&&request,changes=returned?Object.entries(request.updates||{}):[];
   card.innerHTML=`<h2 class="sectionTitle">🔎 收案決定</h2><p class="sectionSub">${returned?'業管已完成補件，請再次確認。':'先看上方需求內容；資料足夠就接受案件，不足則勾選欄位退回業管。'}</p>${returned?`<div class="workflowStatus returned"><div><strong>業管已回覆</strong><p>${safe(request.responseNote||'業管已更新退回欄位。')}</p><div class="changeList">${changes.map(([name,value])=>`<div class="changeItem"><b>${safe(name)}</b><span>${safe(summaryText(value)||'（空白）')}</span></div>`).join('')}</div></div><span class="state">等待再次確認</span></div>`:''}<div class="formGrid"><label>收案日期<input type="date" id="sharedReceivedDate" value="${safe(sharedCase.workflowData?.['收案日期']||today())}"></label><label>收案營養師<input id="sharedNutritionist" value="${safe(intake.ownerName&&intake.ownerName!=='未指派'?intake.ownerName:'林營養師')}"></label><label class="wide">營養師回覆<textarea id="sharedNutritionReply" placeholder="例如：資料已確認，可開始評估配方">${safe(sharedCase.workflowData?.['營養師回覆']||'')}</textarea></label></div><div class="actions"><button type="button" id="sharedReturnBtn">${returned?'仍有缺漏，再次退回':'資料不足，退回補件'}</button><button class="primary" type="button" id="sharedAcceptBtn">${returned?'確認補件並開始配方':'接受案件並開始配方'}</button></div>`;
-  bindReturnModal(intake);
   document.querySelector('#sharedAcceptBtn').onclick=()=>{
     BKECases.acceptIntake(sharedCase,intake.id,{nutritionist:document.querySelector('#sharedNutritionist').value.trim()||'林營養師',reply:document.querySelector('#sharedNutritionReply').value.trim(),date:document.querySelector('#sharedReceivedDate').value||today()});
     location.reload();
   };
 }
 
-function bindReturnModal(intake){
-  const modal=document.querySelector('#returnModal'),form=document.querySelector('#returnForm'),choices=document.querySelector('#returnChoices');
+function bindSupplementPanel(intake){
+  const panel=document.querySelector('#supplementPanel'),fieldsBox=document.querySelector('#supplementFields');
   const summary=sharedCase.summary||{};
   const missingKeys=new Set(A_CORE_FIELDS.filter(([key])=>!summaryFilled(summary[key])).map(([key])=>key));
   const allFields=[...A_CORE_FIELDS.map(([key,label])=>({key,label})),...A_OPTIONAL_FIELDS.map(key=>({key,label:key}))];
-  allFields.sort((a,b)=>(missingKeys.has(b.key)?1:0)-(missingKeys.has(a.key)?1:0));
-  const hint=missingKeys.size?`<p class="returnHint">系統偵測到 ${missingKeys.size} 項基本資料尚未填寫，已幫你預先勾選（標「缺」者），可再自行增減。</p>`:'';
-  choices.innerHTML=hint+allFields.map(f=>{const miss=missingKeys.has(f.key);return`<label class="${miss?'missField':''}"><input type="checkbox" name="退回項目" value="${safe(f.key)}" data-label="${safe(f.label)}" data-miss="${miss?'1':''}" ${miss?'checked':''}>${safe(f.label)}${miss?'<em>缺</em>':''}</label>`}).join('');
-  document.querySelector('#sharedReturnBtn').onclick=()=>{
-    modal.classList.add('show');
-    form.querySelectorAll('input[type=checkbox]').forEach(i=>i.checked=i.dataset.miss==='1');
-    form.querySelector('[name="退回原因"]').value='';
-  };
-  document.querySelector('#cancelReturn').onclick=()=>modal.classList.remove('show');
-  form.onsubmit=event=>{
-    event.preventDefault();
-    const checked=[...form.querySelectorAll('[name="退回項目"]:checked')],selected=checked.map(i=>({key:i.value,label:i.dataset.label||i.value}));
-    if(!selected.length){toast('請至少選擇一個退回欄位');return}
-    const actor=document.querySelector('#sharedNutritionist')?.value.trim()||'林營養師',note=form.querySelector('[name="退回原因"]').value.trim();
-    modal.classList.remove('show');
+  document.querySelector('#supplementHint').textContent=missingKeys.size?`系統偵測到 ${missingKeys.size} 項基本資料未填，已預先勾選（標「缺」），可自行增減。`:'勾選需要業管補充的欄位，勾選時上方需求表會同步標記。';
+  fieldsBox.innerHTML=allFields.map(f=>{const miss=missingKeys.has(f.key);return`<label class="${miss?'missField':''}"><input type="checkbox" value="${safe(f.key)}" data-label="${safe(f.label)}" data-miss="${miss?'1':''}" ${miss?'checked':''}><span>${safe(f.label)}</span>${miss?'<em>缺</em>':''}</label>`}).join('');
+  const countEl=document.querySelector('#supplementCount');
+  const rows=[...document.querySelectorAll('#reviewCard .kvItem[data-field-key]')];
+  const syncHighlight=()=>{const checked=new Set([...fieldsBox.querySelectorAll('input:checked')].map(i=>i.value));rows.forEach(el=>el.classList.toggle('markPick',checked.has(el.dataset.fieldKey)));countEl.textContent=`已選 ${checked.size} 項`};
+  fieldsBox.querySelectorAll('input').forEach(i=>i.onchange=syncHighlight);
+  const open=()=>{panel.hidden=false;syncHighlight()};
+  const close=()=>{panel.hidden=true;rows.forEach(el=>el.classList.remove('markPick'))};
+  document.querySelector('#closeSupplement').onclick=close;
+  const markBtn=document.querySelector('#markSupplementBtn');if(markBtn)markBtn.onclick=open;
+  const returnBtn=document.querySelector('#sharedReturnBtn');if(returnBtn)returnBtn.onclick=open;
+  const gotoBtn=document.querySelector('#gotoIntakeBtn');
+  if(gotoBtn)gotoBtn.onclick=()=>{const target=document.querySelector('#intakeCard');target.scrollIntoView({behavior:'smooth',block:'center'});target.classList.remove('intakeFocus');void target.offsetWidth;target.classList.add('intakeFocus')};
+  document.querySelector('#submitSupplement').onclick=()=>{
+    const checked=[...fieldsBox.querySelectorAll('input:checked')];
+    if(!checked.length){toast('請至少選擇一個補件欄位');return}
+    const selected=checked.map(i=>({key:i.value,label:i.dataset.label||i.value}));
+    const actor=document.querySelector('#sharedNutritionist')?.value.trim()||'林營養師';
+    const note=document.querySelector('#supplementNote').value.trim();
     BKECases.returnForSupplement(sharedCase,intake.id,note,selected,actor);
     location.href='nutritionist.html';
   };
+  const head=document.querySelector('#supplementHead');let dragging=false,offX=0,offY=0;
+  head.addEventListener('mousedown',event=>{if(event.target.closest('.floatClose'))return;dragging=true;const rect=panel.getBoundingClientRect();offX=event.clientX-rect.left;offY=event.clientY-rect.top;panel.style.right='auto';document.body.style.userSelect='none'});
+  window.addEventListener('mousemove',event=>{if(!dragging)return;let x=Math.max(6,Math.min(event.clientX-offX,innerWidth-panel.offsetWidth-6)),y=Math.max(6,Math.min(event.clientY-offY,innerHeight-56));panel.style.left=x+'px';panel.style.top=y+'px'});
+  window.addEventListener('mouseup',()=>{if(dragging){dragging=false;document.body.style.userSelect=''}});
 }
 
 function renderFormula(intake,task){
