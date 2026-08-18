@@ -10,7 +10,7 @@
 </head>
 <body>
   <div class="app">
-    <aside class="side"><div class="logo">BKE<small>代工需求管理</small></div><nav class="nav"><button onclick="location.href='preview.html'">案件工作台</button><button onclick="location.href='tasks.html?role=manager'">全部待辦</button><button onclick="location.href='case.html'">案件處理</button><button onclick="location.href='role-portal.html'">切換角色</button><button class="on">報表與匯出</button></nav><div class="user">管理者<small>測試環境</small></div></aside>
+    <aside class="side"><div class="logo">BKE<small>代工需求管理</small></div><nav class="nav"><button onclick="location.href='preview.html'">案件工作台</button><button onclick="location.href='tasks.html?role=manager'">全部待辦</button><button onclick="location.href='case.html'">案件處理</button><button onclick="BKECases.openDeleteManager()">🗑 刪除案件</button><button onclick="location.href='role-portal.html'">切換角色</button><button class="on">報表與匯出</button></nav><div class="user">管理者<small>測試環境</small></div></aside>
     <main class="main">
       <header class="top"><div><div class="eyebrow">MANAGEMENT OVERVIEW</div><h1>案件進度總覽</h1><p>這一版開始讀取同一瀏覽器實際建立的 A／B／C 測試案件。</p></div><div class="actions"><button id="toggleFullTableBtn">A 表完整表格檢視</button> <button id="exportBtn">下載目前案件清單</button></div></header>
       <div class="notice">目前仍是 localStorage 前台原型；數字只代表這台瀏覽器內的匿名測試案件，不是公司正式營運資料。</div>

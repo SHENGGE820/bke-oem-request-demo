@@ -10,7 +10,7 @@
 </head>
 <body>
   <div class="app">
-    <aside class="side"><div class="logo">BKE<small>代工需求管理</small></div><div class="role">行銷顧問工作台<br><small>審稿、簡報與教育訓練</small></div><nav class="nav"><button class="on">我的案件</button><button onclick="location.href='tasks.html?role=marketing'">我的待辦</button><button onclick="location.href='preview.html'">案件工作台</button><button onclick="location.href='role-portal.html'">切換角色</button></nav><div class="profile">行銷顧問<br><small>行銷顧問角色</small></div></aside>
+    <aside class="side"><div class="logo">BKE<small>代工需求管理</small></div><div class="role">行銷顧問工作台<br><small>審稿、簡報與教育訓練</small></div><nav class="nav"><button class="on">我的案件</button><button onclick="location.href='tasks.html?role=marketing'">我的待辦</button><button onclick="location.href='preview.html'">案件工作台</button><button onclick="BKECases.openDeleteManager()">🗑 刪除案件</button><button onclick="location.href='role-portal.html'">切換角色</button></nav><div class="profile">行銷顧問<br><small>行銷顧問角色</small></div></aside>
     <main class="main">
       <header class="top"><div><div class="eyebrow">MARKETING WORKSPACE</div><h1>行銷需求與下一步</h1><p>先承接新工作與逾期項目，再處理審稿、簡報及授課安排。</p></div><div class="topActions"><button onclick="location.href='role-portal.html'">切換角色</button><button onclick="location.href='tasks.html?role=marketing'">查看待辦</button></div></header>
       <div class="notice" id="notice">目前只會顯示這台裝置中的匿名測試案件；正式多人同步仍需接上資料庫。</div>

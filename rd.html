@@ -11,7 +11,7 @@
 </head>
 <body>
   <div class="app">
-    <aside class="side"><div class="logo">BKE<small>代工需求管理</small></div><div class="role">研發打樣工作台<br><small>樣品製作與提交追蹤</small></div><nav class="nav"><button class="on">打樣看板</button><button onclick="location.href='tasks.html?role=rd'">我的研發待辦</button><button onclick="location.href='case.html'">案件紀錄</button><button onclick="location.href='role-portal.html'">切換角色</button></nav><div class="profile">張研發<br><small>產品研發部</small></div></aside>
+    <aside class="side"><div class="logo">BKE<small>代工需求管理</small></div><div class="role">研發打樣工作台<br><small>樣品製作與提交追蹤</small></div><nav class="nav"><button class="on">打樣看板</button><button onclick="location.href='tasks.html?role=rd'">我的研發待辦</button><button onclick="location.href='case.html'">案件紀錄</button><button onclick="BKECases.openDeleteManager()">🗑 刪除案件</button><button onclick="location.href='role-portal.html'">切換角色</button></nav><div class="profile">張研發<br><small>產品研發部</small></div></aside>
     <main class="main">
       <header class="top"><div><div class="eyebrow">R&D SAMPLE WORKSPACE</div><h1>打樣工作台</h1><p>依優先順序完成收案、製作、回覆與樣品提交。</p></div><button onclick="location.href='role-portal.html'">切換角色</button></header>
       <div class="demo" id="demoNotice">目前為角色介面展示。若同一瀏覽器已有案件分派到研發，會優先顯示實際測試案件；沒有案件時才顯示下方匿名示範卡。</div>

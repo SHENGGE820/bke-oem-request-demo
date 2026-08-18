@@ -10,7 +10,7 @@
 </head>
 <body>
   <div class="app">
-    <aside class="side"><div class="logo">BKE<small>代工需求管理</small></div><div class="role">營養師工作台<br><small>只顯示需要我處理的案件</small></div><nav class="nav"><button class="on">我的案件</button><button onclick="location.href='tasks.html?role=nutrition'">我的待辦</button><button onclick="location.href='case.html'">配方與版本</button><button onclick="location.href='role-portal.html'">切換角色</button></nav><div class="profile">林營養師<br><small>營養研發部</small></div></aside>
+    <aside class="side"><div class="logo">BKE<small>代工需求管理</small></div><div class="role">營養師工作台<br><small>只顯示需要我處理的案件</small></div><nav class="nav"><button class="on">我的案件</button><button onclick="location.href='tasks.html?role=nutrition'">我的待辦</button><button onclick="location.href='case.html'">配方與版本</button><button onclick="BKECases.openDeleteManager()">🗑 刪除案件</button><button onclick="location.href='role-portal.html'">切換角色</button></nav><div class="profile">林營養師<br><small>營養研發部</small></div></aside>
     <main class="main">
       <header class="top"><div><div class="eyebrow">NUTRITION WORKSPACE</div><h1>營養師案件與下一步</h1><p>先處理等待接案與補件完成，再繼續進行中的配方工作。</p></div><div class="topActions"><button onclick="location.href='role-portal.html'">切換角色</button><button onclick="location.href='reports.html'">查看總覽</button></div></header>
       <div class="demo" id="demoNotice">目前為角色介面展示；若同一瀏覽器已有案件工作屬於營養師，會優先顯示那些測試案件。</div>
