@@ -265,11 +265,11 @@ function renderAction(intake,formula){
 
 function renderReview(intake){
   const card=document.querySelector('#reviewCard'),summary=sharedCase.summary||{};
-  const missing=A_CORE_FIELDS.filter(([key])=>!summaryFilled(summary[key]));
+  const missing=BKECases.coreMissing(summary);
   const groups=[['① 產品與對象',['產品類別','族群','族群年齡','調理部位','期望功能']],['② 需求與成本',['客戶需求','目標成本','產品售價']],['③ 劑型與包裝',['目標劑型','配方方式','每盒數量','每盒單位']],['④ 限制與出口',['特殊需求','出口國別']]];
   const byLabel=new Map(A_CORE_FIELDS.map(([key,label])=>[label,{key,label}]));
   const used=new Set();
-  const kvItem=(key,label)=>{const value=summary[key],filled=summaryFilled(value),text=withUnit(key,summaryText(value)),wide=filled&&text.length>34;return`<div class="kvItem ${filled?'':'miss'} ${wide?'full':''}" data-field-key="${safe(key)}"><span class="k">${summaryIcon(label)} ${safe(label)}</span><span class="v">${filled?safe(text):'<em>∅ 尚未填寫</em>'}</span></div>`};
+  const kvItem=(key,label)=>{let value=summary[key],filled=summaryFilled(value);if(key==='出口國別'&&!filled&&!BKECases.exportsAbroad(summary)){value='僅供內銷（台灣）';filled=true}const text=withUnit(key,summaryText(value)),wide=filled&&text.length>34;return`<div class="kvItem ${filled?'':'miss'} ${wide?'full':''}" data-field-key="${safe(key)}"><span class="k">${summaryIcon(label)} ${safe(label)}</span><span class="v">${filled?safe(text):'<em>∅ 尚未填寫</em>'}</span></div>`};
   const groupHtml=groups.map(([title,labels])=>{const items=labels.map(l=>{const f=byLabel.get(l);if(!f)return'';used.add(f.label);return kvItem(f.key,f.label)}).join('');return`<div class="reviewGroup"><h4>${title}</h4><div class="kv">${items}</div></div>`}).join('');
   const dosageEntries=DOSAGE_SPEC_KEYS.map(key=>[key,summary[key]]).filter(([,value])=>summaryFilled(value));
   const dosageHtml=dosageEntries.length?`<div class="reviewGroup"><h4>劑型規格</h4><div class="kv">${dosageEntries.map(([k])=>kvItem(k,k)).join('')}</div></div>`:'';
@@ -305,7 +305,7 @@ function renderIntake(intake){
 function bindSupplementPanel(intake){
   const panel=document.querySelector('#supplementPanel'),fieldsBox=document.querySelector('#supplementFields');
   const summary=sharedCase.summary||{};
-  const missingKeys=new Set(A_CORE_FIELDS.filter(([key])=>!summaryFilled(summary[key])).map(([key])=>key));
+  const missingKeys=new Set(BKECases.coreMissing(summary).map(([key])=>key));
   const allFields=[...A_CORE_FIELDS.map(([key,label])=>({key,label})),...A_OPTIONAL_FIELDS.map(key=>({key,label:key}))];
   document.querySelector('#supplementHint').textContent=missingKeys.size?`系統偵測到 ${missingKeys.size} 項基本資料未填，已預先勾選（標「缺」），可自行增減。`:'勾選需要業管補充的欄位，勾選時上方需求表會同步標記。';
   fieldsBox.innerHTML=allFields.map(f=>{const miss=missingKeys.has(f.key);return`<label class="${miss?'missField':''}"><input type="checkbox" value="${safe(f.key)}" data-label="${safe(f.label)}" data-miss="${miss?'1':''}" ${miss?'checked':''}><span>${safe(f.label)}</span>${miss?'<em>缺</em>':''}</label>`}).join('');
