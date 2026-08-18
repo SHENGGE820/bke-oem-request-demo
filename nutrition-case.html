@@ -9,11 +9,20 @@
 .top{height:66px;background:#153f33;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 32px;position:sticky;top:0;z-index:10}
 .logo{font:700 24px Georgia;color:#e3bd69}.logo small{font:13px Arial;color:white;margin-left:12px}
 .top button{border:1px solid #ffffff44;background:transparent;color:white;border-radius:8px;padding:9px 13px;cursor:pointer;font-size:14px}
-.wrap{max-width:920px;margin:28px auto 70px;padding:0 20px}
+.wrap{max-width:1160px;margin:24px auto 70px;padding:0 20px}
 .crumb{color:#75817b;margin-bottom:14px;font-size:14px}
-.hero{background:white;border:1px solid #dee5e1;border-radius:15px;padding:25px 28px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
-.hero small{color:#a67d35}.hero h1{font:600 27px Georgia;margin:6px 0}
-.meta{display:flex;flex-wrap:wrap;gap:20px;color:#77827d;font-size:14px}
+.hero{background:white;border:1px solid #dee5e1;border-radius:15px;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.hero small{color:#a67d35;font-size:13px}.hero h1{font:600 22px Georgia;margin:3px 0}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;color:#77827d;font-size:13.5px;margin-top:2px}
+.layout{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(310px,1fr);gap:18px;align-items:start;margin-top:18px}
+.mainCol{display:block}
+.mainCol .card:first-child{margin-top:0}
+.sideCol{position:sticky;top:84px;display:grid;gap:14px}
+.sideCol .card{margin-top:0}
+.sideCol .formGrid{grid-template-columns:1fr}
+.sideCol .actionCard{padding:18px 20px}
+.sideCol .actionCard h2{font-size:19px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.sideCol{position:static}}
 .pill{background:#fff0d2;color:#855b00;border-radius:99px;padding:8px 14px;font-weight:bold;white-space:nowrap}
 .card{background:white;border:1px solid #dee5e1;border-radius:16px;padding:24px 26px;margin-top:18px}
 .actionCard{display:flex;gap:18px;align-items:flex-start;border:1px solid #bad7ca;background:linear-gradient(135deg,#f2faf6,#eef7f1)}
@@ -42,6 +51,16 @@
 .box.missing{border-color:#ecd6a8;background:#fff8e8;color:#795619;font-weight:700}
 .summaryEmoji{margin-right:6px}
 @media(max-width:640px){.summaryGrid{grid-template-columns:1fr}}
+.reviewGroup{border:1px solid #e5eae7;border-radius:12px;padding:12px 16px 4px;margin-top:12px;background:#fbfdfc}
+.reviewGroup>h4{margin:0;font:700 13.5px Arial;color:#5a6b62;letter-spacing:.3px}
+.reviewGroup .kv{display:grid;grid-template-columns:1fr 1fr;gap:0 22px;margin-top:6px}
+.kvItem{display:flex;flex-direction:column;gap:2px;padding:8px 0;border-bottom:1px solid #eef2f0}
+.kvItem .k{font-size:12px;color:#8a938d}
+.kvItem .v{font-size:14.5px;color:#1f2d27;line-height:1.5;white-space:pre-wrap}
+.kvItem.miss{background:#fffaf1;border-radius:6px;padding:8px 8px;margin:0 -8px}
+.kvItem.miss .v em{font-style:normal;color:#b5892f;font-weight:700}
+.kvItem.full{grid-column:1/-1}
+@media(max-width:560px){.reviewGroup .kv{grid-template-columns:1fr}}
 .formGrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .formGrid label,.supplementGrid label{display:grid;gap:8px;font-size:14px;font-weight:700;color:#28362f}
 .formGrid input,.formGrid textarea,.supplementGrid input,.supplementGrid select,.supplementGrid textarea{width:100%;padding:12px;border:1px solid #d5deda;border-radius:9px;background:#fff;font-size:15px}
@@ -95,6 +114,9 @@
 .subnote{margin:0 0 16px;color:#66736d;font-size:14px}
 .returnChoices{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px}
 .returnChoices label{font-size:13.5px;display:flex;gap:7px;align-items:center}
+.returnChoices label.missField{background:#fff6e9;border:1px solid #f0d9a8;border-radius:7px;padding:4px 9px}
+.returnChoices label.missField em{font-style:normal;color:#b5892f;font-weight:700;font-size:11px;margin-left:auto;background:#f6e2b8;padding:1px 7px;border-radius:20px}
+.returnHint{grid-column:1/-1;font-size:12.5px;color:#b5892f;background:#fffaf1;border:1px solid #f0e0c0;border-radius:8px;padding:8px 11px;margin:0 0 2px;line-height:1.5}
 .dialog textarea{width:100%;min-height:90px;border:1px solid #cbd7d1;border-radius:9px;padding:11px;margin-bottom:16px}
 .dialog footer{display:flex;justify-content:flex-end;gap:10px}
 .dialog footer button{border:1px solid #d3dcd7;background:#fff;border-radius:9px;padding:11px 16px;cursor:pointer;font-weight:700}
@@ -114,13 +136,19 @@
       <div><small id="heroCaseId">單號</small><h1 id="heroTitle">案件標題</h1><div class="meta" id="heroMeta"></div></div>
       <span class="pill" id="statusPill">進行中</span>
     </section>
-    <section class="card actionCard" id="actionCard"></section>
-    <section class="card" id="reviewCard"></section>
-    <section class="card" id="intakeCard"></section>
-    <section class="card" id="formulaCard" hidden></section>
-    <div class="side">
-      <section class="card"><h3>案件進度</h3><ol class="timeline" id="timeline"></ol></section>
-      <section class="card"><h3>最近活動</h3><div class="activity" id="activity"></div></section>
+    <div class="layout">
+      <div class="mainCol">
+        <section class="card" id="reviewCard"></section>
+        <section class="card" id="formulaCard" hidden></section>
+        <div class="side">
+          <section class="card"><h3>案件進度</h3><ol class="timeline" id="timeline"></ol></section>
+          <section class="card"><h3>最近活動</h3><div class="activity" id="activity"></div></section>
+        </div>
+      </div>
+      <aside class="sideCol">
+        <section class="card actionCard" id="actionCard"></section>
+        <section class="card" id="intakeCard"></section>
+      </aside>
     </div>
   </div>
 </main>
@@ -135,6 +163,9 @@ function today(){const d=new Date();return`${d.getFullYear()}-${String(d.getMont
 const savedToast=document.querySelector('#savedToast');
 function toast(message){savedToast.textContent=message;savedToast.classList.add('show');setTimeout(()=>savedToast.classList.remove('show'),1800)}
 function summaryIcon(name){return name.includes('日期')?'📅':name.includes('客戶')?'🏢':name.includes('申請')?'👤':name.includes('產品')||name.includes('劑型')?'💊':name.includes('族群')||name.includes('年齡')?'👥':name.includes('功能')||name.includes('調理')?'✨':name.includes('成本')||name.includes('售價')?'💰':name.includes('數量')||name.includes('單位')?'📦':name.includes('配方')?'🧪':name.includes('特殊')?'⚠️':name.includes('出口')?'🌏':'📌'}
+const UNIT_SUFFIX={'目標成本':'元／單位','產品售價':'元','粉劑規格':'g／包','錠劑重量':'mg／顆','液態規格':'ml／份','果凍規格':'g／份'};
+const DOSAGE_SPEC_KEYS=['粉劑規格','膠囊材質','膠囊號數','錠劑形式','錠劑重量','液態規格','果凍規格','其他劑型說明'];
+function withUnit(key,text){const u=UNIT_SUFFIX[key];return u&&/^\d/.test(text)?`${text} ${u}`:text}
 function supplementEditor(field){const key=field.key||field,label=field.label||field,value=sharedCase.summary?.[key]??'',array=Array.isArray(value),opt=FIELD_OPTIONS[key];if(opt&&opt.type==='select'){const options=['',...opt.options];return`<label>${safe(label)}<select data-supplement-field="${safe(key)}">${options.map(o=>`<option value="${safe(o)}" ${o===value?'selected':''}>${o||'請選擇'}</option>`).join('')}</select></label>`}if(opt&&opt.type==='multiselect'){const values=array?value:(value?[value]:[]);return`<label class="wide">${safe(label)}<select multiple data-supplement-field="${safe(key)}" data-array="true" size="${Math.min(opt.options.length,6)}">${opt.options.map(o=>`<option value="${safe(o)}" ${values.includes(o)?'selected':''}>${safe(o)}</option>`).join('')}</select><span class="fieldHelp">按住 Ctrl／⌘ 可複選。</span></label>`}const long=array||['客戶需求','配方說明','特殊需求','族群','族群年齡','調理部位','期望功能'].includes(key);const help=array?'<span class="fieldHelp">多項內容請用「、」分隔。</span>':'';return`<label class="${long?'wide':''}">${safe(label)}${long?`<textarea data-supplement-field="${safe(key)}" data-array="${array}">${safe(summaryText(value))}</textarea>`:`<input data-supplement-field="${safe(key)}" value="${safe(value)}">`}${help}</label>`}
 
 const requestedCaseId=new URLSearchParams(location.search).get('case');
@@ -200,11 +231,19 @@ function renderAction(intake,formula){
 function renderReview(){
   const card=document.querySelector('#reviewCard'),summary=sharedCase.summary||{};
   const missing=A_CORE_FIELDS.filter(([key])=>!summaryFilled(summary[key]));
-  const coreBoxes=A_CORE_FIELDS.map(([key,label])=>{const value=summary[key],filled=summaryFilled(value);return`<div class="box ${filled&&String(value).length>70?'wide':''} ${filled?'':'missing'}"><span>${summaryIcon(label)} ${safe(label)}</span>${filled?safe(summaryText(value)):'⚠ 尚未填寫'}</div>`}).join('');
+  const groups=[['① 產品與對象',['產品類別','族群','族群年齡','調理部位','期望功能']],['② 需求與成本',['客戶需求','目標成本','產品售價']],['③ 劑型與包裝',['目標劑型','配方方式','每盒數量','每盒單位']],['④ 限制與出口',['特殊需求','出口國別']]];
+  const byLabel=new Map(A_CORE_FIELDS.map(([key,label])=>[label,{key,label}]));
+  const used=new Set();
+  const kvItem=(key,label)=>{const value=summary[key],filled=summaryFilled(value),text=withUnit(key,summaryText(value)),wide=filled&&text.length>34;return`<div class="kvItem ${filled?'':'miss'} ${wide?'full':''}"><span class="k">${summaryIcon(label)} ${safe(label)}</span><span class="v">${filled?safe(text):'<em>∅ 尚未填寫</em>'}</span></div>`};
+  const groupHtml=groups.map(([title,labels])=>{const items=labels.map(l=>{const f=byLabel.get(l);if(!f)return'';used.add(f.label);return kvItem(f.key,f.label)}).join('');return`<div class="reviewGroup"><h4>${title}</h4><div class="kv">${items}</div></div>`}).join('');
+  const dosageEntries=DOSAGE_SPEC_KEYS.map(key=>[key,summary[key]]).filter(([,value])=>summaryFilled(value));
+  const dosageHtml=dosageEntries.length?`<div class="reviewGroup"><h4>劑型規格</h4><div class="kv">${dosageEntries.map(([k])=>kvItem(k,k)).join('')}</div></div>`:'';
+  const leftover=A_CORE_FIELDS.filter(([,label])=>!used.has(label));
+  const leftoverHtml=leftover.length?`<div class="reviewGroup"><h4>其他</h4><div class="kv">${leftover.map(([k,l])=>kvItem(k,l)).join('')}</div></div>`:'';
   const optionalEntries=A_OPTIONAL_FIELDS.map(key=>[key,summary[key]]).filter(([,value])=>summaryFilled(value));
-  const optionalBoxes=optionalEntries.map(([name,value])=>`<div class="box ${String(value).length>70?'wide':''}"><span>${summaryIcon(name)} ${safe(name)}</span>${safe(summaryText(value))}</div>`).join('');
+  const optionalHtml=optionalEntries.length?`<div class="reviewGroup"><h4>➕ 補充資料</h4><div class="kv">${optionalEntries.map(([name,value])=>`<div class="kvItem full"><span class="k">${summaryIcon(name)} ${safe(name)}</span><span class="v">${safe(withUnit(name,summaryText(value)))}</span></div>`).join('')}</div></div>`:'';
   const banner=missing.length?`<div class="workflowStatus returned"><div><strong>⚠ 尚有 ${missing.length} 項基本資料未填寫</strong><p>缺少：${missing.map(([,label])=>safe(label)).join('、')}。建議先退回業管補件，再判斷是否接受案件。</p></div><span class="state">待補件</span></div>`:`<div class="workflowStatus"><div><strong>✓ 基本資料已填寫完整</strong><p>可依下方內容直接判斷是否接受案件。</p></div></div>`;
-  card.innerHTML=`<h2 class="sectionTitle">📋 需求內容</h2><p class="sectionSub">業管跟客戶對焦後填寫，欄位順序比照 A 表填寫順序。</p>${banner}<div class="summaryGrid">${coreBoxes}${optionalBoxes}</div>`;
+  card.innerHTML=`<h2 class="sectionTitle">📋 需求內容</h2>${banner}${groupHtml}${dosageHtml}${leftoverHtml}${optionalHtml}`;
 }
 
 function renderIntake(intake){
@@ -229,11 +268,15 @@ function renderIntake(intake){
 
 function bindReturnModal(intake){
   const modal=document.querySelector('#returnModal'),form=document.querySelector('#returnForm'),choices=document.querySelector('#returnChoices');
+  const summary=sharedCase.summary||{};
+  const missingKeys=new Set(A_CORE_FIELDS.filter(([key])=>!summaryFilled(summary[key])).map(([key])=>key));
   const allFields=[...A_CORE_FIELDS.map(([key,label])=>({key,label})),...A_OPTIONAL_FIELDS.map(key=>({key,label:key}))];
-  choices.innerHTML=allFields.map(f=>`<label><input type="checkbox" name="退回項目" value="${safe(f.key)}" data-label="${safe(f.label)}">${safe(f.label)}</label>`).join('');
+  allFields.sort((a,b)=>(missingKeys.has(b.key)?1:0)-(missingKeys.has(a.key)?1:0));
+  const hint=missingKeys.size?`<p class="returnHint">系統偵測到 ${missingKeys.size} 項基本資料尚未填寫，已幫你預先勾選（標「缺」者），可再自行增減。</p>`:'';
+  choices.innerHTML=hint+allFields.map(f=>{const miss=missingKeys.has(f.key);return`<label class="${miss?'missField':''}"><input type="checkbox" name="退回項目" value="${safe(f.key)}" data-label="${safe(f.label)}" data-miss="${miss?'1':''}" ${miss?'checked':''}>${safe(f.label)}${miss?'<em>缺</em>':''}</label>`}).join('');
   document.querySelector('#sharedReturnBtn').onclick=()=>{
     modal.classList.add('show');
-    form.querySelectorAll('input[type=checkbox]').forEach(i=>i.checked=false);
+    form.querySelectorAll('input[type=checkbox]').forEach(i=>i.checked=i.dataset.miss==='1');
     form.querySelector('[name="退回原因"]').value='';
   };
   document.querySelector('#cancelReturn').onclick=()=>modal.classList.remove('show');
