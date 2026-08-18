@@ -42,6 +42,7 @@
 - **使用者明確要求（2026-08-17）：**A 表「產品類別」新增「尚未確定／待客戶確認」選項；「目標劑型」選項加上表情符號；「預計每盒售價」與「每盒數量」從 `type="number"` 改成 `type="text" inputmode="numeric"`，去掉數字滾輪，直接打字就好。`wizard.html`／`wizard-simple.html` 兩版本欄位與選項必須保持一致，之後如果再調整這幾個欄位要同步修兩邊。
 - **使用者明確要求（2026-08-17）：**`reports.html` 新增「A 表完整表格檢視」，類似原 Excel 一列一案件、欄位就是欄位的總覽。目前只做 A 表（B／C 表欄位差異太大，後續有需要再各自做一張），唯讀不可直接在格子上編輯，避免繞過 `acceptIntake`／`returnForSupplement` 等流程規則。要改資料請點「開啟案件」進 `case.html`。欄位定義在 `reports.html` 的 `fullTableColumns`，新增 A 表欄位時記得同步更新這裡。
 - **使用者明確要求（2026-08-18）：**業管填表交給營養師後，營養師主要靠「需求內容」頁籤判斷資料夠不夠，光靠經驗看摘要不容易發現少了什麼。`case.html` 的需求內容改成固定欄位清單（`A_CORE_FIELDS`，順序比照 A 表填寫順序），未填的欄位會標示「⚠ 尚未填寫」，頁面頂部另外列出缺漏欄位清單提示可退回補件；補充性欄位（`A_OPTIONAL_FIELDS`，如特殊族群說明、配方說明等）仍維持只在有值時才顯示，避免畫面塞滿不相關的空欄。新增／調整 A 表欄位時，`case.html` 的這兩個陣列要跟著同步。
+- **使用者明確要求（2026-08-18）：**業管過去只能等營養師退回補件才能改資料，若業管自己想起或客戶事後補充資訊，原本沒有入口可以編輯。`case.html`「需求內容」頁籤新增「業管補充／更正資料」按鈕，展開涵蓋全部 A 表欄位（核心＋補充）的編輯表單，隨時可更新任一欄位並附註本次補充說明；送出呼叫 `shared-case-store.js` 新增的 `BKECases.updateSummaryFields(item, updates, note, actorName)`，只更新 `summary` 並記錄活動紀錄，不影響任務狀態、不會繞過或覆蓋 `acceptIntake`／`returnForSupplement` 的既有流程。實作時遇到一個 CSS 陷阱：`.supplementGrid`／`.actions` 本身有 `display:grid`／`display:flex`，會蓋掉 `[hidden]` 的 `display:none`，需要額外加 `#id[hidden]{display:none}` 才會真的隱藏，之後新增可切換顯示的區塊要注意同樣的問題。
 - `tasks.html` 會從 `bke-a-case-demo-v2` 讀取案件工作負責人、進度及期限，其餘卡片與 `reports.html` 仍為測試資料。
 - `tasks.html` 也會讀取 `bke-demo-cases-v1` 中由 A／B／C 表建立的新案件；有 `case` 查詢參數時，`case.html` 會顯示該案件及其自動產生的工作。
 - 尚無共享資料庫、正式 API、附件儲存、登入權限、通知或稽核紀錄。
