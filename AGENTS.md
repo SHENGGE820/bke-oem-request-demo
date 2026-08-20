@@ -8,10 +8,11 @@
 
 ## 接手前必讀
 
-1. 讀完整 `README.md`。
-2. 檢查 `preview.html`、`wizard.html`、`case.html`、`tasks.html`、`reports.html`。
-3. 任何修改前先跑完整操作流程：工作台 → 新增需求 → 五步表單 → 送出 → 案件處理 → 待辦 → 報表。
-4. 若要調整表單內容，必須對照原始工作簿 `需求表單(防呆版)VL討論結果.xlsx`；若工作簿不在新環境，向使用者索取，不要自行刪欄位。
+1. 讀完整 `HANDOFF_GUIDE.md`、`README.md` 與本文件。
+2. 確認 `references/private/需求表單(防呆版)VL討論結果.xlsx` 與 `references/private/message.txt` 已存在；私有參考檔預設不進 GitHub。
+3. 檢查 `preview.html`、`role-portal.html`、`sales.html`、`form-versions.html`、`wizard.html`、`wizard-simple.html`、`product-data-form.html`、`marketing-request-form.html`、`nutritionist.html`、`rd.html`、`case.html`、`tasks.html`、`reports.html`。
+4. 任何修改前先跑完整操作流程：工作台 → 新增需求 → 分別測試 A／B／C 表 → 送出 → 案件處理 → 待辦 → 報表。
+5. 若要調整表單內容，必須對照原始工作簿；若工作簿不在新環境，向使用者索取，不要自行刪欄位。
 
 ## 已確認的使用者需求
 
@@ -26,12 +27,36 @@
 
 ## 現況
 
-- 五頁靜態 HTML 已完成可操作展示。
-- `wizard.html` 有步驟式表單、條件欄位、防呆、預覽與本機草稿。
-- `case.html` 有營養師接案、初步配方、三次調整、三次打樣、追蹤與結案。
-- `tasks.html` 和 `reports.html` 仍以固定測試資料呈現。
+- 多角色靜態 HTML 原型已完成可操作展示。
+- `wizard.html` 是 A 客戶配方需求的步驟式填法，含條件欄位、防呆、預覽與本機草稿。
+- `wizard-simple.html` 是同一張 A 表的快速填法，保留相同欄位與選項並使用獨立草稿。
+- `product-data-form.html` 與 `marketing-request-form.html` 分別對應原工作簿 B、C 分頁。
+- `shared-case-store.js` 串接 A／B／C 送出、案件詳情、工作台及待辦，資料鍵為 `bke-demo-cases-v1`。
+- A 表兩種填法送出前皆有交接品質檢查；修改任一版時，必須保持風險規則與送出確認行為一致。
+- 角色介面目前是分開的靜態展示：業管使用 `sales.html`、營養師使用 `nutritionist.html`、研發使用 `rd.html`、行銷顧問使用 `marketing.html`、主管使用 `reports.html`，`role-portal.html` 僅供測試切換；`preview.html` 保留為舊版案件工作台入口。
+- `case.html` 有工作項目分派、營養師收案、結構化退回補件、業管原案件補件、配方與報價測試工作區、三次調整、三次打樣、追蹤與結案。配方原料明細與成本拆項目前只是未確認草案，不是原表正式欄位。
+- A 表工作已拆成「營養師收案與資料確認」及「配方與報價」；接受案件後才會解鎖配方工作。
+- 案件頁頁籤順序已調整為「需求內容→收案處理→工作進度→……」；`case.html` 內 `pages`／`tabBtns` 陣列改用 id 對照表建立（而非單純 DOM 順序），之後新增或調整頁籤時務必同步檢查 `renderSharedWorkflow`／`renderSharedFormula`／`renderSharedCase`／`requestedView` 內的索引是否一致。
+- `shared-case-store.js` 已有 `decorateCasePage()`／`taskAccess()` 這套工作清單鎖定機制（locked／active／completed 狀態與專屬引導文字），修改「案件完整進度」清單前務必先讀這段，避免做出重複或衝突的防呆邏輯。
+- `shared-case-store.js` 已全庫共用新增一段 Enter 自動跳格行為（根據 DOM 順序判斷下一個可視欄位，適用 input 文字／數字／日期與 select，不包含 textarea／checkbox／radio），新增表單欄位時不需要額外接線。一般文字欄位（text／email／tel／search／url）另外支援向上鍵回到上一格；日期／數字／下拉選單刻意排除在向上鍵之外，避免蓋掉這些欄位原生的上下鍵操作（調整日期、數值或選項）。
+- **使用者明確要求（2026-08-17）：**A 表「產品類別」新增「尚未確定／待客戶確認」選項；「目標劑型」選項加上表情符號；「預計每盒售價」與「每盒數量」從 `type="number"` 改成 `type="text" inputmode="numeric"`，去掉數字滾輪，直接打字就好。`wizard.html`／`wizard-simple.html` 兩版本欄位與選項必須保持一致，之後如果再調整這幾個欄位要同步修兩邊。
+- **修正（2026-08-18）：**上一項替「目標劑型」選項加上表情符號（例如 `⚪ 錠劑`）後，造成 `wizard.html`／`wizard-simple.html` 的劑型連動失效——`syncConditional()` 用 `dosage.value==='錠劑'` 直接比對、`dosageFields()` 也拿含表情符號的 value 去查 `DOSAGE_SPEC_FIELDS`，兩者都比不到，導致選劑型後對應規格欄位（粉劑規格、膠囊材質／號數、錠劑形式／重量、液態規格、果凍規格、其他劑型說明）不再自動出現，送出前摘要也抓不到。已新增 `dosageValue()`（`String(dosage.value).replace(/^\S+\s+/,'').trim()` 去掉開頭「表情符號＋空格」），`syncConditional` 與 `dosageFields` 都改用它比對。**教訓：以後在選項文字前加表情符號／前綴時，凡是拿 `.value` 做等值比對或當 map key 的邏輯都要一起改成正規化後比對。**兩版本要同步修。
+- **使用者明確要求（2026-08-17）：**`reports.html` 新增「A 表完整表格檢視」，類似原 Excel 一列一案件、欄位就是欄位的總覽。目前只做 A 表（B／C 表欄位差異太大，後續有需要再各自做一張），唯讀不可直接在格子上編輯，避免繞過 `acceptIntake`／`returnForSupplement` 等流程規則。要改資料請點「開啟案件」進 `case.html`。欄位定義在 `reports.html` 的 `fullTableColumns`，新增 A 表欄位時記得同步更新這裡。
+- **使用者明確要求（2026-08-18）：**業管填表交給營養師後，營養師主要靠「需求內容」頁籤判斷資料夠不夠，光靠經驗看摘要不容易發現少了什麼。`case.html` 的需求內容改成固定欄位清單（`A_CORE_FIELDS`，順序比照 A 表填寫順序），未填的欄位會標示「⚠ 尚未填寫」，頁面頂部另外列出缺漏欄位清單提示可退回補件；補充性欄位（`A_OPTIONAL_FIELDS`，如特殊族群說明、配方說明等）仍維持只在有值時才顯示，避免畫面塞滿不相關的空欄。新增／調整 A 表欄位時，`case.html` 的這兩個陣列要跟著同步。
+- **使用者明確要求（2026-08-18）：**業管過去只能等營養師退回補件才能改資料，若業管自己想起或客戶事後補充資訊，原本沒有入口可以編輯。`case.html`「需求內容」頁籤新增「業管補充／更正資料」按鈕，展開涵蓋全部 A 表欄位（核心＋補充）的編輯表單，隨時可更新任一欄位並附註本次補充說明；送出呼叫 `shared-case-store.js` 新增的 `BKECases.updateSummaryFields(item, updates, note, actorName)`，只更新 `summary` 並記錄活動紀錄，不影響任務狀態、不會繞過或覆蓋 `acceptIntake`／`returnForSupplement` 的既有流程。實作時遇到一個 CSS 陷阱：`.supplementGrid`／`.actions` 本身有 `display:grid`／`display:flex`，會蓋掉 `[hidden]` 的 `display:none`，需要額外加 `#id[hidden]{display:none}` 才會真的隱藏，之後新增可切換顯示的區塊要注意同樣的問題。
+- **使用者明確要求（2026-08-18）：**主管原始構想是「業管精準收集條件、營養師不用來回改報價」，且要能「實際填寫／匯出／執行」。確認匯出指的是單一案件的 CSV，不是另一種格式；`case.html` 頂部新增「⬇ 匯出本案 CSV」按鈕，把該案件的需求內容、收案資料匯出成欄位／內容兩欄的 CSV。`A_CORE_FIELDS`／`A_OPTIONAL_FIELDS`／`summaryFilled` 已從 `renderSharedCase` 內部搬到頂層作用域共用，之後新增別的匯出或畫面若要用同一份欄位定義，直接引用這三個即可，不要重新宣告一份。
+- **使用者明確要求（2026-08-18）：**編輯需求內容（退回補件與業管主動補充共用的 `supplementEditor`）改成跟原始 A 表一樣的選項，不要變成純文字輸入。新增 `FIELD_OPTIONS` 對照表：單選型（產品類別、目標劑型、配方方式、產品每盒單位）用一般 `<select>`；複選型（族群、調理部位、期望功能、特殊需求）用 `<select multiple>` 節省版面，選項文字與 value 完全比照 `wizard.html`／`wizard-simple.html`，兩邊新增或調整選項時要同步改。族群年齡因為選項是依所選族群動態產生（`ageOptions`，見 `wizard.html`），暫時仍用文字輸入，沒有一併做成連動選單。（**2026-08-18 追加：**複選型已從 `<select multiple>` 改為勾選晶片（`.chipChoices`，容器帶 `data-supplement-field`、`data-array`、`data-multi="true"`，內含 `<input type=checkbox>`），更好點選、不用 Ctrl／⌘。送出時改讀 `field.querySelectorAll('input:checked')`；`case.html` 兩處 handler（`#submitSupplement`、`#submitProactiveEdit`）都已同步。）
+- **使用者明確要求（2026-08-18）：**營養師改用新的專用審閱頁 `nutrition-case.html`。`nutritionist.html` 工作台的真實案件按鈕（`liveCard` 的 onclick）已從 `case.html?case=…&role=nutrition` 改導向 `nutrition-case.html?case=…`。兩頁共用同一套 `window.BKECases`（localStorage `bke-demo-cases-v1`）：`nutrition-case.html` 的收案 `acceptIntake`、退回補件 `returnForSupplement` 都以 `return update(item)` 寫回、配方 `saveFormula` 也呼叫 `BKECases.update`，因此業管（sales.html/case.html）與主管（reports.html）都會同步。`nutrition-case.html` 本身不處理業管補件（`resumeAfterSupplement` 仍在 case.html/sales.html），只接營養師端。
+- **實測全流程後的 UX 調整（2026-08-18）：**實際跑「業管→營養師」全流程後修正四點，`case.html` 與 `nutrition-case.html` 的「需求內容」審閱版面已統一：(1) 退回補件視窗會依 `A_CORE_FIELDS` 自動偵測未填欄位、預先勾選並置頂標「缺」，`bindReturnModal` 用 `data-miss` 記錄，開窗時只勾缺漏項；(2) 審閱顯示補回單位——新增 `UNIT_SUFFIX`（目標成本→元／單位、產品售價→元、粉劑規格→g／包等）與 `withUnit()`，純數字值才附單位；劑型規格欄位（`DOSAGE_SPEC_KEYS`）改在審閱頁以獨立「劑型規格」區塊顯示（原本完全沒顯示）；(3) 需求內容改成四區塊 `.reviewGroup`／`.kvItem`（①產品與對象 ②需求與成本 ③劑型與包裝 ④限制與出口＋劑型規格＋補充資料），兩頁共用同一套群組定義，調整分組時兩頁都要改；(4) 特殊需求等複選補件改為勾選晶片（見上一則多選欄位說明）。以上皆用瀏覽器實測驗證：退回自動勾 13 項、單位正確顯示、晶片複選存回 `summary` 為陣列、無 JS 錯誤。
+- `tasks.html` 會從 `bke-a-case-demo-v2` 讀取案件工作負責人、進度及期限，其餘卡片與 `reports.html` 仍為測試資料。
+- `tasks.html` 也會讀取 `bke-demo-cases-v1` 中由 A／B／C 表建立的新案件；有 `case` 查詢參數時，`case.html` 會顯示該案件及其自動產生的工作。
 - 尚無共享資料庫、正式 API、附件儲存、登入權限、通知或稽核紀錄。
+- 測試版負責人下拉選單暫時顯示完整名單；正式版必須依工作階段、角色與部門限制候選人，並由後端權限同步驗證。
+- **使用者明確要求（2026-08-17）：**正式版有登入系統後，「負責人」欄位應自動帶入目前登入者身份，不要再讓使用者自己從下拉選單挑自己的名字。
+- **使用者明確要求（2026-08-17）：**「工作進度」狀態應尽量跟著實際操作（送出、收案、退回、補件、確認、完成配方等）自動更新，不要要求業管再手動去改一次狀態；但仍要保留手動修正的能力作為備援（例如補錄漏採的紀錄或修正錯誤）。目前 `acceptIntake`／`returnForSupplement`／`resumeAfterSupplement`／`saveFormula` 已會自動更新對應工作的狀態與負責人；仍需確認未來新增的工作項目（如研發打樣、客戶結案）是否也能同樣自動化，不要回退成全靠手動點選單。
+- 各角色工作台預設只顯示未完成工作；完成紀錄保留在「已完成／歷史」篩選或折疊區。主管總覽仍可查看全部案件。
 - 公開展示網址是 `https://bke-oem-request-demo.daoson-tw.chatgpt.site/`。
+- **使用者明確要求（2026-08-18）：**要另一個「別的地方也能開」的公開網址，已改用 GitHub Pages（不是重建 OpenAI Sites），來源分支設為 `agent/sync-bke-request-workflow`，網址 `https://shengge820.github.io/bke-oem-request-demo/`；推送到該分支後 GitHub 會自動重新建置，不需要另外操作。新增 `index.html` 重導到 `role-portal.html`，因為原本沒有根目錄入口頁。
 - Sites 專案 ID 已寫在 `.openai/hosting.json`，部署時必須沿用，禁止重複建立 Sites 專案。
 
 ## 實作原則
@@ -43,17 +68,27 @@
 - 行動裝置與桌面都應可用；複選項不能變成難掃描的文字牆。
 - 送出、退回、接案、更新配方、申請打樣與結案都應產生活動紀錄。
 - 正式版資料採共享雲端資料庫，瀏覽器 `localStorage` 僅能作為暫存或離線輔助。
-- 角色至少包含業管、營養師／研發、主管；權限需以後端驗證，不只隱藏按鈕。
+- 角色至少包含業管、營養師、研發、行銷顧問、主管；權限需以後端驗證，不只隱藏按鈕。
+- 原 Excel A 表在配方／報價階段只確認「初步配方號碼」、「配方報價提交日期」與三次調整紀錄；不得把目前試作的成本拆項描述為原表或主管需求。
+- 使用者記得可能已有既有報價系統。最新方向是讓案件頁成為單一入口，從案件開啟外部報價並回寫摘要，而不是在未確認規格前重做另一套報價計算。
+- 尚待使用者取得既有報價系統名稱／網址、畫面或報價單樣本、使用角色與可串接能力。取得前不要再發明報價欄位。
+
+## GitHub 與交接規則
+
+- 使用者要求每完成一個可用階段，都要先更新 `README.md` 與 `AGENTS.md` 的「目前完成、未確認事項、下一步」，再建立 Git commit 並推送到目前的 GitHub 分支。
+- 目前工作分支為 `agent/sync-bke-request-workflow`，草稿 PR 為 `#1`。後續階段直接更新此分支與 PR，不要為同一項流程重複開 PR。
+- 提交前只納入本專案範圍檔案，完成語法／建置與 `git diff --check` 後再推送；不得把其他資料夾或客戶機密一起提交。
+- 每次推送後，在草稿 PR 留下繁體中文階段摘要，包含本次完成內容、重要決策、仍待確認事項與下一步。
 
 ## 優先待辦
 
-1. 決定正式技術架構與資料庫。
-2. 建立資料模型及狀態機。
-3. 接上登入與角色權限。
-4. 將新增需求、案件處理、待辦與報表改為真實資料。
-5. 加上附件、通知、匯出及稽核紀錄。
-6. 使用匿名測試資料進行端到端驗收。
+1. 先完成 A 表前段操作優化：送出、收案、退回、補件、再次確認、配方與報價。
+2. 取得既有報價系統或實際報價單樣本，決定「開啟外部報價＋摘要回寫」的欄位與串接方式。
+3. 依確認結果移除／替換目前未確認的成本拆項，並確認配方是否也由既有系統管理。
+4. 前段流程穩定後再處理研發打樣與業管結案。
+5. 決定正式技術架構、資料庫、登入與角色權限。
+6. 加上正式附件、通知、匯出及稽核紀錄，使用匿名資料端到端驗收。
 
 ## 儲存庫範圍警告
 
-原本本機資料夾混有其他未追蹤內容，例如品牌圖片、商品設計、另一套大型 App 與開發腳手架。它們不屬於此儲存庫。提交時只能納入本文件、README、五個 HTML、`build-static-preview.mjs`、`.openai/hosting.json` 與必要的忽略設定。
+原本本機資料夾混有其他未追蹤內容，例如品牌圖片、商品設計、另一套大型 App 與開發腳手架。它們不屬於此儲存庫。提交時只能納入本文件、README、本專案 HTML、`build-static-preview.mjs`、`.openai/hosting.json` 與必要的忽略設定。

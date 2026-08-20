@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>BKE｜業管工作台</title>
+  <style>
+    :root{--ink:#17231f;--muted:#6c7872;--green:#174f3d;--line:#dfe6e2;--red:#a83d35;--amber:#8b611a;--blue:#2f638d}*{box-sizing:border-box}body{margin:0;background:#f2f5f3;color:var(--ink);font:14px Arial,"Noto Sans TC",sans-serif}button,input,a{font:inherit}.app{min-height:100vh;display:flex}.side{position:fixed;inset:0 auto 0 0;width:224px;background:#153f33;color:#fff;padding:26px 18px;display:flex;flex-direction:column}.logo{font:700 27px Georgia;color:#e5bd69;padding:0 11px 23px;border-bottom:1px solid #ffffff20}.logo small{display:block;font:12px Arial;color:#fff;letter-spacing:.1em;margin-top:6px}.role{margin:20px 5px 10px;padding:12px;background:#ffffff10;border-radius:10px}.role small{color:#b9cec6}.nav{display:grid;gap:6px}.nav a{color:#c1d2cc;text-decoration:none;padding:12px;border-radius:9px}.nav .on,.nav a:hover{background:#ffffff14;color:#fff}.profile{margin-top:auto;border-top:1px solid #ffffff20;padding:17px 8px;line-height:1.5}.profile small{color:#bbcec7}.main{margin-left:224px;width:calc(100% - 224px);padding:36px 44px 70px}.top{display:flex;justify-content:space-between;gap:18px;align-items:center}.eyebrow{font-size:11px;color:#a9772a;letter-spacing:.16em;font-weight:700}.top h1{font:600 34px Georgia;margin:5px 0 7px}.top p{margin:0;color:var(--muted)}.primary{display:inline-block;border:0;background:var(--green);color:#fff!important;text-decoration:none;border-radius:9px;padding:12px 17px;cursor:pointer;text-align:center}.demo{margin:22px 0 13px;border:1px solid #ead6aa;background:#fff8e8;color:#71511b;border-radius:10px;padding:11px 14px;line-height:1.55}.requestBar{display:grid;grid-template-columns:auto repeat(3,minmax(0,1fr));gap:9px;align-items:stretch;margin-bottom:18px}.requestBar>strong{display:flex;align-items:center;padding:0 4px;color:#52625b}.requestLink{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:11px;padding:11px 13px;color:var(--ink);text-decoration:none}.requestLink b{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:#e8f1ed;color:var(--green);font:700 16px Georgia}.requestLink span{display:grid;gap:2px}.requestLink small{color:var(--muted)}.requestLink:hover{border-color:#9dbcae;background:#fbfdfc}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:22px}.stat{background:#fff;border:1px solid var(--line);border-radius:13px;padding:17px}.stat span{color:var(--muted)}.stat b{float:right;font:600 27px Georgia}.stat small{display:block;color:#8b968f;margin-top:12px}.stat.red b{color:var(--red)}.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:start}.toolbar{display:flex;justify-content:space-between;gap:12px;margin-bottom:12px}.tabs{display:flex;gap:5px;flex-wrap:wrap}.tabs button{border:0;background:transparent;padding:9px 11px;border-radius:8px;color:var(--muted);cursor:pointer}.tabs button.on{background:#dfece7;color:var(--green);font-weight:700}.search{border:1px solid #d6dfda;border-radius:9px;padding:10px 12px;width:230px}.cases{display:grid;gap:11px}.case{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 19px;display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:18px}.case.return{border-color:#e7bbb7}.case.action{border-color:#b8d4c8}.case[hidden]{display:none}.caseTop{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.pill{display:inline-block;border-radius:99px;padding:5px 9px;font-size:11px;font-weight:700}.pill.red{background:#fde8e6;color:#993830}.pill.amber{background:#fff0d5;color:#7f5815}.pill.blue{background:#e5eff9;color:#2d5f8c}.pill.green{background:#e1f0e8;color:#205a45}.pill.gray{background:#eef1ef;color:#66716c}.case h2{font-size:17px;margin:9px 0 5px}.case p{color:var(--muted);line-height:1.55;margin:0}.meta{display:flex;gap:14px;flex-wrap:wrap;color:#7c8781;font-size:12px;margin-top:11px}.recent{margin-top:10px;color:#67746e;font-size:12px;line-height:1.5}.next{background:#f6f9f7;border-radius:9px;padding:9px 11px;margin-top:12px;color:#325e4d;font-size:12px;line-height:1.5}.next.warn{background:#fff7e8;color:#73531d}.caseAction{display:flex;flex-direction:column;justify-content:center;gap:8px}.caseAction a{border:1px solid #d7dfdb;background:#fff;color:var(--ink);text-decoration:none;text-align:center;border-radius:9px;padding:10px}.caseAction .primary{background:var(--green);color:#fff;border-color:var(--green)}.aside{display:grid;gap:14px;position:sticky;top:20px}.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px}.panel h3{font:600 17px Georgia;margin:0 0 12px}.todo{padding:10px 0;border-top:1px solid #edf0ee;display:grid;grid-template-columns:24px 1fr;gap:8px;line-height:1.45}.todo:first-of-type{border-top:0}.todo a{color:var(--ink);text-decoration:none}.todo a:hover{text-decoration:underline}.todo small{display:block;color:var(--muted);margin-top:2px}.quality{display:grid;grid-template-columns:1fr auto;gap:8px;padding:8px 0}.quality span{color:var(--muted)}.empty{display:none;background:#fff;border:1px dashed #cfd9d4;border-radius:14px;padding:40px;text-align:center;color:var(--muted)}@media(max-width:1080px){.layout{grid-template-columns:1fr}.aside{position:static}.stats{grid-template-columns:1fr 1fr}.requestBar{grid-template-columns:1fr 1fr}.requestBar>strong{grid-column:1/-1}}@media(max-width:720px){.app{display:block}.side{position:static;width:100%;padding:17px 16px}.logo{font-size:22px;padding:0 0 13px}.logo small,.role,.profile{display:none}.nav{display:flex;gap:4px;overflow:auto;padding-top:10px}.nav a{font-size:12px;white-space:nowrap;padding:9px 10px}.main{margin:0;width:100%;padding:24px 15px 60px}.top{align-items:flex-start}.top h1{font-size:27px}.top .primary{display:none}.stats{grid-template-columns:1fr 1fr}.requestBar{grid-template-columns:1fr}.requestBar>strong{grid-column:auto}.toolbar{display:grid}.search{width:100%}.case{grid-template-columns:1fr}.caseAction{flex-direction:row}.caseAction a{flex:1}.meta{display:grid;gap:5px}}
+  </style>
+</head>
+<body data-role="sales">
+  <div class="app">
+    <aside class="side">
+      <div class="logo">BKE<small>代工需求管理</small></div>
+      <div class="role">業管工作台<br><small>需求、補件與客戶追蹤</small></div>
+      <nav class="nav">
+        <a class="on" href="sales.html">我的案件</a>
+        <a href="form-versions.html">建立需求</a>
+        <a href="tasks.html?role=sales">我的待辦</a>
+        <a href="#" onclick="BKECases.openDeleteManager();return false;">🗑 刪除案件</a>
+        <a href="role-portal.html">切換角色</a>
+      </nav>
+      <div class="profile"><span data-account-name>王小明</span><br><small data-account-dept>業務管理部</small></div>
+    </aside>
+    <main class="main">
+      <header class="top">
+        <div><div class="eyebrow">SALES WORKSPACE</div><h1>我的案件與下一步</h1><p>先完成自己能處理的事，再追蹤目前由其他角色承辦的案件。</p></div>
+        <a class="primary" href="form-versions.html">＋ 建立新需求</a>
+      </header>
+      <div class="demo" id="demoNotice">正在整理這台裝置上的案件與草稿。</div>
+      <section class="requestBar" aria-label="需求快捷入口">
+        <strong>快速建立</strong>
+        <a class="requestLink" href="wizard.html"><b>A</b><span>客戶配方需求<small>引導填寫</small></span></a>
+        <a class="requestLink" href="product-data-form.html"><b>B</b><span>產品資料需求<small>文件、校稿與授權</small></span></a>
+        <a class="requestLink" href="marketing-request-form.html"><b>C</b><span>行銷顧問需求<small>審稿、簡報與授課</small></span></a>
+      </section>
+      <section class="stats">
+        <div class="stat red"><span>退回補件</span><b id="returnStat">0</b><small>現在由業管補充</small></div>
+        <div class="stat"><span>需要我處理</span><b id="actionStat">0</b><small>目前輪到業管</small></div>
+        <div class="stat"><span>等待其他角色</span><b id="waitingStat">0</b><small>可查看最新進度</small></div>
+        <div class="stat"><span>我的草稿</span><b id="draftStat">0</b><small>尚未建立案件</small></div>
+      </section>
+      <section class="layout">
+        <div>
+          <div class="toolbar">
+            <div class="tabs" id="salesTabs">
+              <button class="on" data-filter="current">目前案件</button>
+              <button data-filter="return">退回補件</button>
+              <button data-filter="action">需要我處理</button>
+              <button data-filter="waiting">等待其他角色</button>
+              <button data-filter="draft">草稿</button>
+              <button data-filter="done">已完成／歷史</button>
+            </div>
+            <input class="search" id="salesSearch" placeholder="搜尋案件、客戶或工作" aria-label="搜尋業管案件">
+          </div>
+          <div class="cases" id="salesCases"></div>
+          <div class="empty" id="salesEmpty">目前沒有符合條件的案件或草稿</div>
+        </div>
+        <aside class="aside">
+          <section class="panel"><h3>今天優先處理</h3><div id="priorityList"></div></section>
+          <section class="panel"><h3>本機案件概況</h3><div class="quality"><span>目前案件</span><b id="caseCount">0</b></div><div class="quality"><span>業管未完成工作</span><b id="salesTaskCount">0</b></div><div class="quality"><span>跨角色待分派</span><b id="unassignedCount">0</b></div><div class="quality"><span>已完成案件</span><b id="doneCount">0</b></div></section>
+        </aside>
+      </section>
+    </main>
+  </div>
+  <script src="shared-case-store.js"></script>
+  <script>
+    function safe(value){return String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]))}
+    function salesOwned(task){return task?.ownerRole==='業管'||String(task?.ownerName||'').includes('業管')}
+    function openTasks(item){return (item.tasks||[]).filter(task=>task.status!=='已完成')}
+    function caseGroup(item){const tasks=openTasks(item);if(!tasks.length||['已完成','已結案'].includes(item.status))return'done';const mine=tasks.filter(salesOwned);if(mine.some(task=>task.status==='等待補件'))return'return';if(mine.length)return'action';return'waiting'}
+    function currentTask(item,group=caseGroup(item)){const tasks=openTasks(item),mine=tasks.filter(salesOwned);if(group==='return')return mine.find(task=>task.status==='等待補件')||mine[0];if(group==='action')return mine[0];return tasks[0]||null}
+    function groupLabel(group,task){if(group==='return')return'退回補件';if(group==='action')return task?.title==='客戶確認與結案'?'待客戶追蹤':'需要我處理';if(group==='waiting')return'等待其他角色';return'已完成'}
+    function groupTone(group){return group==='return'?'red':group==='action'?'green':group==='waiting'?'blue':'gray'}
+    function ownerText(task){if(!task)return'已完成';return task.ownerName&&task.ownerName!=='未指派'?task.ownerName:`${task.ownerRole||'待確認'}（待分派）`}
+    function actionCopy(group,task){if(group==='return')return'查看退回原因並完成補件';if(group==='action'&&task?.title==='客戶確認與結案')return'記錄客戶回覆、成單或結案結果';if(group==='action')return`更新「${task?.title||'目前工作'}」的進度`;if(group==='waiting')return`等待 ${ownerText(task)} 更新「${task?.title||'目前工作'}」`;return'案件工作已全部完成'}
+    function caseCard(item){const group=caseGroup(item),task=currentTask(item,group),overdue=task&&BKECases.isOverdue?.(task),latest=(item.activities||[]).at(-1),href=`case.html?case=${encodeURIComponent(item.id)}${group==='return'?'&view=supplement':''}&role=sales`,primary=group==='return'?'處理補件':group==='action'&&task?.title==='客戶確認與結案'?'記錄客戶回覆':group==='action'?'更新進度':'查看案件';return `<article class="case ${group}" data-status="${group}" data-search="${safe([item.title,item.customer,item.applicant,task?.title,task?.note,ownerText(task)].join(' ').toLowerCase())}"><div><div class="caseTop"><span class="pill ${groupTone(group)}">${safe(groupLabel(group,task))}</span><span class="pill gray">${safe(item.type)} 表</span>${overdue?'<span class="pill red">已逾期</span>':''}</div><h2>${safe(item.title)}</h2><p>${safe(item.customer)}｜申請人：${safe(item.applicant)}</p><div class="meta"><span>目前負責：${safe(ownerText(task))}</span><span>工作：${safe(task?.title||'全部完成')}</span><span>期限：${safe(task?.due||'未設定')}</span></div>${latest?`<div class="recent">最近紀錄：${safe(latest.text)}</div>`:''}<div class="next ${group==='return'||group==='action'?'warn':''}">下一步：${safe(actionCopy(group,task))}</div></div><div class="caseAction"><a href="${href}">查看內容</a><a class="primary" href="${href}">${primary}</a></div></article>`}
+    const draftDefinitions=[
+      {key:'bke-a-form-draft-v2',type:'A',name:'客戶配方需求｜引導版',href:'wizard.html'},
+      {key:'bke-a-form-simple-draft-v1',type:'A',name:'客戶配方需求｜快速版',href:'wizard-simple.html'},
+      {key:'bke-b-product-data-draft-v1',type:'B',name:'產品資料需求',href:'product-data-form.html'},
+      {key:'bke-c-marketing-request-draft-v1',type:'C',name:'行銷顧問需求',href:'marketing-request-form.html'}
+    ];
+    function drafts(){return draftDefinitions.flatMap(definition=>{const raw=localStorage.getItem(definition.key);if(!raw)return[];try{const data=JSON.parse(raw)||{},customer=data['客戶名稱']||'尚未填寫客戶',product=data['產品名稱']||data['產品類別']||definition.name;return[{...definition,customer,product}]}catch{return[]}})}
+    function draftCard(draft){return `<article class="case" data-status="draft" data-search="${safe(`${draft.name} ${draft.customer} ${draft.product}`.toLowerCase())}"><div><div class="caseTop"><span class="pill amber">本機草稿</span><span class="pill gray">${draft.type} 表</span></div><h2>${safe(draft.product)}</h2><p>${safe(draft.customer)}｜尚未建立案件，也不會出現在其他角色待辦。</p><div class="next">下一步：回到原表繼續核對並完成測試送出。</div></div><div class="caseAction"><a class="primary" href="${draft.href}">繼續填寫</a></div></article>`}
+    const cases=window.BKECases?BKECases.all():[],draftItems=drafts(),salesCases=document.querySelector('#salesCases'),salesEmpty=document.querySelector('#salesEmpty'),salesSearch=document.querySelector('#salesSearch'),salesTabs=[...document.querySelectorAll('#salesTabs button')],returnStat=document.querySelector('#returnStat'),actionStat=document.querySelector('#actionStat'),waitingStat=document.querySelector('#waitingStat'),draftStat=document.querySelector('#draftStat'),caseCount=document.querySelector('#caseCount'),salesTaskCount=document.querySelector('#salesTaskCount'),unassignedCount=document.querySelector('#unassignedCount'),doneCount=document.querySelector('#doneCount'),demoNotice=document.querySelector('#demoNotice'),priorityList=document.querySelector('#priorityList');let salesFilter='current';
+    function renderData(){salesCases.innerHTML=cases.map(caseCard).join('')+draftItems.map(draftCard).join('');const grouped=group=>cases.filter(item=>caseGroup(item)===group).length,allTasks=cases.flatMap(item=>item.tasks||[]).filter(task=>task.status!=='已完成'),salesTasks=allTasks.filter(salesOwned);returnStat.textContent=grouped('return');actionStat.textContent=grouped('action');waitingStat.textContent=grouped('waiting');draftStat.textContent=draftItems.length;caseCount.textContent=cases.length;salesTaskCount.textContent=salesTasks.length;unassignedCount.textContent=allTasks.filter(task=>task.ownerName==='未指派').length;doneCount.textContent=grouped('done');demoNotice.textContent=cases.length||draftItems.length?`目前整理出 ${cases.length} 筆本機測試案件與 ${draftItems.length} 份草稿；只把真正輪到業管的工作列為「需要我處理」。`:'目前沒有本機測試案件或草稿，可直接從下方 A／B／C 入口建立。';const priorities=cases.filter(item=>['return','action'].includes(caseGroup(item))).sort((a,b)=>{const rank=item=>caseGroup(item)==='return'?0:BKECases.isOverdue?.(currentTask(item))?1:2;return rank(a)-rank(b)}).slice(0,4);priorityList.innerHTML=priorities.length?priorities.map((item,index)=>{const task=currentTask(item),group=caseGroup(item),href=`case.html?case=${encodeURIComponent(item.id)}${group==='return'?'&view=supplement':''}&role=sales`;return `<div class="todo"><b>${index+1}</b><div><a href="${href}">${safe(item.title)}</a><small>${safe(groupLabel(group,task))}｜${safe(task?.title||'查看案件')}</small></div></div>`}).join(''):'<div class="todo"><b>✓</b><div>目前沒有業管待處理工作<small>等待中的案件仍可從左側清單查看</small></div></div>';applyFilter()}
+    function applyFilter(){const query=salesSearch.value.trim().toLowerCase(),cards=[...salesCases.querySelectorAll('.case')];let shown=0;cards.forEach(card=>{const matchFilter=salesFilter==='current'?card.dataset.status!=='done':card.dataset.status===salesFilter,visible=matchFilter&&(!query||card.dataset.search.includes(query));card.hidden=!visible;if(visible)shown++});salesEmpty.textContent=salesFilter==='done'?'目前沒有已完成的歷史案件':'目前沒有符合條件的案件或草稿';salesEmpty.style.display=shown?'none':'block'}
+    salesTabs.forEach(button=>button.onclick=()=>{salesTabs.forEach(item=>item.classList.remove('on'));button.classList.add('on');salesFilter=button.dataset.filter;applyFilter()});salesSearch.oninput=applyFilter;renderData();
+  </script>
+</body>
+</html>

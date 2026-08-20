@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>BKE｜選擇需求類型</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f3f5f3;color:#182620;font:15px Arial,"Noto Sans TC",sans-serif}.top{height:72px;background:#133d31;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(22px,5vw,70px)}.logo{font:700 26px Georgia;color:#e6bd68}.logo small{color:#fff;font:12px Arial;letter-spacing:.12em;margin-left:10px}.back{border:1px solid #ffffff45;background:transparent;color:#fff;border-radius:9px;padding:10px 14px;cursor:pointer}.wrap{width:min(1120px,calc(100% - 36px));margin:auto;padding:54px 0}.intro{text-align:center;max-width:760px;margin:0 auto 30px}.eyebrow{font-size:11px;letter-spacing:.18em;color:#a67a2c;font-weight:700}.intro h1{font:600 clamp(30px,4vw,44px) Georgia;margin:8px 0 12px}.intro p{color:#68756f;line-height:1.8;margin:0}.notice{background:#fff8e6;border:1px solid #ead7a5;color:#6f5620;border-radius:12px;padding:12px 16px;margin:0 auto 24px;text-align:center}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:#fff;border:1px solid #dce4df;border-radius:20px;padding:26px;box-shadow:0 12px 38px #19372b0b;display:flex;flex-direction:column;min-height:430px}.card.a{border:2px solid #1b604a}.code{width:52px;height:52px;border-radius:15px;display:grid;place-items:center;font:700 24px Georgia;background:#e8f1ed;color:#174f3d}.b .code{background:#edf1f8;color:#375a7d}.c .code{background:#fff1d8;color:#8a6321}.card h2{font:600 25px Georgia;margin:18px 0 4px}.owner{font-size:12px;color:#8a948f;margin-bottom:17px}.desc{color:#66736d;line-height:1.65;margin:0 0 18px}.content{border-top:1px solid #e6ebe8;padding-top:16px;line-height:1.75;color:#43534c}.content b{display:block;color:#1c3229}.actions{display:grid;gap:9px;margin-top:auto;padding-top:22px}.actions a{text-decoration:none;text-align:center;border-radius:11px;padding:13px 15px;font-weight:700;background:#174f3d;color:#fff}.actions a.secondary{background:#fff;color:#174f3d;border:1px solid #aac3b9}.b .actions a{background:#375a7d}.c .actions a{background:#9a6b1c}.foot{text-align:center;color:#87918c;font-size:13px;margin-top:22px}@media(max-width:850px){.cards{grid-template-columns:1fr}.card{min-height:auto}.top{height:62px}.logo small{display:none}.wrap{padding:38px 0}.notice{text-align:left}}
+  </style>
+</head>
+<body>
+  <header class="top"><div class="logo">BKE<small>代工需求管理</small></div><button class="back" onclick="location.href='preview.html'">返回工作台</button></header>
+  <main class="wrap">
+    <div class="intro"><div class="eyebrow">REQUEST CENTER</div><h1>這次要提出哪一種需求？</h1><p>先選需求類型，再依原始公版填寫。A、B、C 是三張不同用途的表，不是三個角色。</p></div>
+    <div class="notice">目前為檢查模式：三張表都暫時取消必填阻擋，方便逐欄核對內容與選項。</div>
+    <section class="cards">
+      <article class="card a"><div class="code">A</div><h2>客戶配方需求</h2><div class="owner">業管提出 → 營養師承辦</div><p class="desc">客戶要開發新產品、確認劑型、族群、配方方向、成本與包裝條件時使用。</p><div class="content"><b>包含內容</b>客戶與產品定位、期望調理方向、配方與劑型、規格成本、打樣及複檢資料。</div><div class="actions"><a href="wizard.html">引導填寫（5 階段）</a><a class="secondary" href="wizard-simple.html">快速填寫（3 階段）</a></div></article>
+      <article class="card b"><div class="code">B</div><h2>產品資料需求</h2><div class="owner">業管提出 → 營養師及相關人員承辦</div><p class="desc">配方確定後，需要彙辦單、成分明細、產品單張、包裝校稿、商標授權或查登資料時使用。</p><div class="content"><b>包含內容</b>產品資料版本、校稿紀錄、授權文件、技術文件、補件與歸檔。</div><div class="actions"><a href="product-data-form.html">開啟 B 表</a></div></article>
+      <article class="card c"><div class="code">C</div><h2>行銷顧問需求</h2><div class="owner">業管提出 → 營養師／行銷顧問承辦</div><p class="desc">需要官網產品審稿、產品介紹簡報、教育訓練或外出授課安排時使用。</p><div class="content"><b>包含內容</b>審稿時程、PPT 需求、授課對象與限制、場次地點及校稿紀錄。</div><div class="actions"><a href="marketing-request-form.html">開啟 C 表</a></div></article>
+    </section>
+    <p class="foot">草稿目前只保存在這台裝置的瀏覽器；正式多人同步會在後端串接階段處理。</p>
+  </main>
+</body></html>
